@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const UserSchema = new Schema({
   userName: {
     type: String,
     required: true,
@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema({
   bio: {
     type: String,
   },
+  posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'post',
+    },
+  ],
 });
 
 UserSchema.methods.generateToken = function () {

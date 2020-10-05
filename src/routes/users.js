@@ -4,6 +4,19 @@ const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth');
 
+// @route   GET /users
+// @desc    Get all users
+// @access  Public
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find().select('-passwordHash');
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+});
+
 // @route   POST /users
 // @desc    Register new user
 // @access  Public
@@ -39,11 +52,47 @@ router.post('/', async (req, res) => {
 router.get('/me', auth, (req, res) => {
   const user = req.user;
   res.json({
+    _id: user.id,
     userName: user.userName,
     fullName: user.fullName,
     age: user.age,
     bio: user.bio,
   });
+});
+
+// @route   PUT /users/me
+// @desc    Update my user profile
+// @access  Private
+router.put('/me', auth, async (req, res) => {
+  try {
+    const { fullName, password, age, bio } = req.body;
+    const passwordHash = await bcrypt.hash(password, 8);
+    const me = req.user;
+    me.fullName = fullName;
+    me.passwordHash = passwordHash;
+    me.age = age;
+    me.bio = bio;
+    await me.save();
+    res.json({ msg: 'Update successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+});
+
+// @route   DELETE /users/me
+// @desc    Delete account
+// @access  Private
+router.delete('/me', auth, async (req, res) => {
+  try {
+    const user = req.user;
+    await User.findByIdAndDelete(user.id);
+    // TODO: Delete post, comments, messages
+    res.json({ msg: 'Delete account successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
 });
 
 module.exports = router;

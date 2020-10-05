@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', require('./src/routes/auth'));
 app.use('/users', require('./src/routes/users'));
+app.use('/posts', require('./src/routes/posts'));
 
 const port = process.env.PORT | 3000;
 
