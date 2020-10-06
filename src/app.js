@@ -6,8 +6,7 @@ const setUpWebsocket = require('./websocket');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
-setUpWebsocket(io);
+setUpWebsocket(server);
 
 connectDb();
 
@@ -20,6 +19,8 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/posts', require('./routes/posts'));
+app.use('/notifications', require('./routes/notifications'));
+app.use('/friends', require('./routes/friends'));
 
 const port = process.env.PORT | 5000;
 

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
+
 const UserSchema = new Schema({
   userName: {
     type: String,
@@ -21,10 +22,28 @@ const UserSchema = new Schema({
   bio: {
     type: String,
   },
+  sentFriendRequests: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
   posts: [
     {
       type: Schema.Types.ObjectId,
       ref: 'post',
+    },
+  ],
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'notification',
     },
   ],
 });

@@ -9,7 +9,9 @@ const auth = require('../../middleware/auth');
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().select('-passwordHash');
+    const users = await User.find().select(
+      '-passwordHash -sentFriendRequests -friends -posts -notifications'
+    );
     res.json(users);
   } catch (error) {
     console.error(error);

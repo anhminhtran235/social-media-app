@@ -6,8 +6,14 @@ const setUpWebsocket = (server) => {
 };
 
 const setupListeners = (io) => {
-  io.on('connection', () => {
+  io.on('connection', (socket) => {
     console.log('Client connected');
+    socket.on('message', (event, data) => {
+      console.log(data);
+    });
+    setInterval(() => {
+      socket.emit('message', 'Hello from server');
+    }, 3000);
   });
 };
 
