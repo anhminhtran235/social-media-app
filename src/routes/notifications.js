@@ -4,7 +4,7 @@ const auth = require('../../middleware/auth');
 const Notification = require('../../models/Notification');
 
 // @route   GET /notifications?skip=5&limit=3
-// @desc    Get all notifications
+// @desc    Get notifications
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {

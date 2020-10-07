@@ -1,7 +1,10 @@
 const socketio = require('socket.io');
 
-const setUpWebsocket = (server) => {
-  const io = socketio(server);
+let io = null;
+const idsMap = new Map(); // key: socketId, val: userId
+
+const setupWebsocket = (server) => {
+  io = socketio(server);
   setupListeners(io);
 };
 
@@ -17,4 +20,4 @@ const setupListeners = (io) => {
   });
 };
 
-module.exports = setUpWebsocket;
+module.exports = { setupWebsocket, io, idsMap };

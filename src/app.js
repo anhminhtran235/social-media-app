@@ -1,12 +1,11 @@
 const express = require('express');
 const connectDb = require('../config/db');
 const http = require('http');
-const socketio = require('socket.io');
-const setUpWebsocket = require('./websocket');
+const { setupWebsocket } = require('./websocket');
 
 const app = express();
 const server = http.createServer(app);
-setUpWebsocket(server);
+setupWebsocket(server);
 
 connectDb();
 
@@ -21,6 +20,7 @@ app.use('/users', require('./routes/users'));
 app.use('/posts', require('./routes/posts'));
 app.use('/notifications', require('./routes/notifications'));
 app.use('/friends', require('./routes/friends'));
+app.use('/newsfeed', require('./routes/newsfeed'));
 
 const port = process.env.PORT | 5000;
 
