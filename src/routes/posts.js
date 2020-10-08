@@ -3,6 +3,12 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const {
+  LIKE_POST,
+  LIKE_COMMENT,
+  COMMENT,
+} = require('../utils/notificationType');
+const createNotiAndNotifyUser = require('../utils/notification');
 
 // @route   GET /posts
 // @desc    Get all posts
@@ -54,15 +60,15 @@ router.post('/me/new', auth, async (req, res) => {
   }
 });
 
-// @route   POST /posts/:id/comment
+// @route   POST /posts/comment
 // @desc    Add new comment
 // @access  Private
-router.post('/:id/comment', auth, async (req, res) => {
+router.post('/comment', auth, async (req, res) => {
   try {
-    const { content } = req.body;
+    const { postId, postOwnerId, content } = req.body;
     const user = req.user;
 
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(postId);
     if (!post) {
       res.json({ error: 'Post does not exist' });
     }
@@ -74,6 +80,15 @@ router.post('/:id/comment', auth, async (req, res) => {
 
     await post.save();
 
+    // Notify post owner
+    const isOwner = user.id.toString() === postOwnerId;
+    if (!isOwner) {
+      await createNotiAndNotifyUser(postOwnerId, COMMENT, {
+        content,
+        from: user.id.toString(),
+      });
+    }
+
     res.json({ msg: 'Add new comment successfully' });
   } catch (error) {
     console.error(error);
@@ -81,27 +96,38 @@ router.post('/:id/comment', auth, async (req, res) => {
   }
 });
 
-// @route   POST /posts/:id/like
+// @route   POST /posts/like
 // @desc    Like post
 // @access  Private
-router.post('/:id/like', auth, async (req, res) => {
+router.post('/like', auth, async (req, res) => {
   try {
+    const { postId, postOwnerId } = req.body;
     const userId = req.user.id;
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(postId);
 
     if (!post) {
       return res.json({ error: 'Post does not exist' });
     }
 
+    let didLike = false;
     const likes = post.likes;
-    const index = likes.findIndex((id) => id.toString() === userId);
+    const index = likes.findIndex((id) => id.toString() === userId.toString());
     if (index !== -1) {
       likes.splice(index, 1);
     } else {
       likes.push(userId);
+      didLike = true;
     }
 
     await post.save();
+
+    // Notify post owner
+    const isOwner = userId.toString() === postOwnerId;
+    if (!isOwner && didLike) {
+      await createNotiAndNotifyUser(postOwnerId, LIKE_POST, {
+        from: userId.toString(),
+      });
+    }
 
     res.json({ msg: 'Toggle like successfully' });
   } catch (error) {
@@ -110,23 +136,25 @@ router.post('/:id/like', auth, async (req, res) => {
   }
 });
 
-// @route   POST /posts/:postId/comment/:commentId/like
+// @route   POST /posts/comment/like
 // @desc    Like comment
 // @access  Private
-router.post('/:postId/comment/:commentId/like', auth, async (req, res) => {
+router.post('/comment/like', auth, async (req, res) => {
   try {
+    const { postId, commentId, commentOwnerId } = req.body;
     const userId = req.user.id;
-    const post = await Post.findById(req.params.postId);
+    const post = await Post.findById(postId);
     if (!post) {
       return res.json({ error: 'Post does not exist' });
     }
     const commentIndex = post.comments.findIndex(
-      (comment) => req.params.commentId === comment.id.toString()
+      (comment) => commentId === comment.id.toString()
     );
     if (commentIndex === -1) {
       return res.json({ error: 'Comment does not exist' });
     }
 
+    let didLike = false;
     const comment = post.comments[commentIndex];
     const likes = comment.likes;
     const index = likes.findIndex((id) => id.toString() === userId);
@@ -134,6 +162,15 @@ router.post('/:postId/comment/:commentId/like', auth, async (req, res) => {
       likes.splice(index, 1);
     } else {
       likes.push(userId);
+      didLike = true;
+    }
+
+    // Notify comment owner
+    const isOwner = userId.toString() === commentOwnerId;
+    if (!isOwner && didLike) {
+      await createNotiAndNotifyUser(commentOwnerId, LIKE_COMMENT, {
+        from: userId.toString(),
+      });
     }
 
     await post.save();

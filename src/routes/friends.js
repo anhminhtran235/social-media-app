@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
+const createNotiAndNotifyUser = require('../utils/notification');
+const {
+  FRIEND_REQUEST,
+  FRIEND_REQUEST_ACCEPTED,
+} = require('../utils/notificationType');
 
 // @route   GET /friends
 // @desc    Get all friends
@@ -41,17 +46,22 @@ router.post('/add', auth, async (req, res) => {
       (u) => u.toString() === me.id.toString()
     );
     const otherHasSentRequest = index !== -1;
-
     if (otherHasSentRequest) {
       otherUser.sentFriendRequests.splice(index, 1);
       me.friends.push(otherUser.id);
       await me.save();
       otherUser.friends.push(me.id);
       await otherUser.save();
+      await createNotiAndNotifyUser(otherUserId, FRIEND_REQUEST_ACCEPTED, {
+        from: me.id.toString(),
+      });
       return res.json({ msg: 'Friend request accepted' });
     } else {
       me.sentFriendRequests.push(otherUser.id);
       await me.save();
+      await createNotiAndNotifyUser(otherUserId, FRIEND_REQUEST, {
+        from: me.id.toString(),
+      });
       return res.json({ msg: 'Friend request sent' });
     }
   } catch (error) {

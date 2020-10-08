@@ -46,6 +46,12 @@ const UserSchema = new Schema({
       ref: 'notification',
     },
   ],
+  messages: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'message',
+    },
+  ],
 });
 
 UserSchema.methods.generateToken = function () {

@@ -1,7 +1,8 @@
 const socketio = require('socket.io');
 
 let io = null;
-const idsMap = new Map(); // key: socketId, val: userId
+const socketIdToUserIdMap = new Map();
+const userIdToSocketIdMap = new Map();
 
 const setupWebsocket = (server) => {
   io = socketio(server);
@@ -10,14 +11,42 @@ const setupWebsocket = (server) => {
 
 const setupListeners = (io) => {
   io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('message', (event, data) => {
-      console.log(data);
+    console.log('Client ' + socket.id + ' connected');
+
+    socket.on('userId', (userId) => {
+      socketIdToUserIdMap.set(socket.id, userId);
+      userIdToSocketIdMap.set(userId, socket.id);
+
+      console.log('socketIdToUserIdMap:', socketIdToUserIdMap);
+      console.log('userIdToSocketIdMap:', userIdToSocketIdMap);
     });
-    setInterval(() => {
-      socket.emit('message', 'Hello from server');
-    }, 3000);
+
+    socket.on('message', (message) => {
+      console.log('Client ' + socket.id + ' says:', message);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Client ' + socket.id + ' disconnect');
+
+      const userId = socketIdToUserIdMap.get(socket.id);
+      socketIdToUserIdMap.delete(socket.id);
+      userIdToSocketIdMap.delete(userId);
+    });
   });
 };
 
-module.exports = { setupWebsocket, io, idsMap };
+const sendNotification = (toSocketId, notification) => {
+  if (toSocketId) {
+    console.log(notification);
+    console.log('Sending notification to ' + toSocketId);
+    io.to(toSocketId).emit('notification', notification);
+  }
+};
+
+module.exports = {
+  setupWebsocket,
+  io,
+  socketIdToUserIdMap,
+  userIdToSocketIdMap,
+  sendNotification,
+};

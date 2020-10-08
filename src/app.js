@@ -21,6 +21,7 @@ app.use('/posts', require('./routes/posts'));
 app.use('/notifications', require('./routes/notifications'));
 app.use('/friends', require('./routes/friends'));
 app.use('/newsfeed', require('./routes/newsfeed'));
+app.use('/message', require('./routes/message'));
 
 const port = process.env.PORT | 5000;
 
