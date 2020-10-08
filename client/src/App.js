@@ -1,11 +1,16 @@
 import React from 'react';
-import Chat from './components/Chat';
+import { Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Register from './components/Register/Register';
 import withWebsocket from './hoc/withWebsocket';
 
 function App(props) {
   return (
     <div>
-      <Chat socket={props.socket} />
+      <Navbar />
+      <Switch>
+        <Route path='/register' component={Register} />
+      </Switch>
     </div>
   );
 }
