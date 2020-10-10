@@ -6,6 +6,7 @@ import {
   LOGOUT,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  TOKEN_FROM_STORAGE,
 } from '../actionTypes';
 
 export const login = (userName, password) => {
@@ -37,5 +38,12 @@ export const register = (user) => {
       alertify.error(error.response.data);
       dispatch({ type: REGISTER_FAILURE });
     }
+  };
+};
+
+export const setTokenFromLocalStorage = (token) => {
+  return {
+    type: TOKEN_FROM_STORAGE,
+    payload: token,
   };
 };
