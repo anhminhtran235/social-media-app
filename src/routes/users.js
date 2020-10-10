@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot get all users');
   }
 });
 
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     const { userName, fullName, password, age, bio } = req.body;
     const isUserNameExists = (await User.findOne({ userName })) !== null;
     if (isUserNameExists) {
-      return res.status(400).json({ error: 'Username already exists' });
+      return res.status(400).send('Username already exists');
     }
 
     const passwordHash = await bcrypt.hash(password, 8);
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot register');
   }
 });
 
@@ -78,7 +78,7 @@ router.put('/me', auth, async (req, res) => {
     res.json({ msg: 'Update successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot update profile');
   }
 });
 
@@ -93,7 +93,7 @@ router.delete('/me', auth, async (req, res) => {
     res.json({ msg: 'Delete account successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot delete my account');
   }
 });
 

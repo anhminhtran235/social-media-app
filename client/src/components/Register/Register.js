@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { register } from '../../store/actions/authAction';
 
 class Register extends Component {
   state = {
@@ -19,12 +20,9 @@ class Register extends Component {
 
   register = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('/users', this.state);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    const { userName, fullName, password, age, bio } = this.state;
+    const user = { userName, fullName, password, age, bio };
+    this.props.register(user);
   };
 
   render() {
@@ -99,4 +97,10 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (user) => dispatch(register(user)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Register);

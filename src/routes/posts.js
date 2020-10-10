@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     res.json(posts);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server error: Cannot get all posts');
   }
 });
 
@@ -32,7 +32,7 @@ router.get('/:id', auth, async (req, res) => {
     res.json(user.posts);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server error: Cannot get posts from this user');
   }
 });
 
@@ -56,7 +56,7 @@ router.post('/me/new', auth, async (req, res) => {
     res.json({ msg: 'Create new post successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server Error: Cannot add new post');
   }
 });
 
@@ -92,7 +92,7 @@ router.post('/comment', auth, async (req, res) => {
     res.json({ msg: 'Add new comment successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server Error: Cannot add new comment');
   }
 });
 
@@ -132,7 +132,7 @@ router.post('/like', auth, async (req, res) => {
     res.json({ msg: 'Toggle like successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server Error: Cannot like/unlike post');
   }
 });
 
@@ -178,7 +178,7 @@ router.post('/comment/like', auth, async (req, res) => {
     res.json({ msg: 'Toggle like successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json('Server Error: Cannot like/dislike comment');
   }
 });
 

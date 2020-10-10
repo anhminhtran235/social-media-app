@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { SET_TOKEN } from '../../../store/actionTypes';
+import { login } from '../../../../store/actions/authAction';
 
 class Login extends Component {
   state = {
@@ -17,16 +16,7 @@ class Login extends Component {
 
   login = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('auth/login', {
-        userName: this.state.userName,
-        password: this.state.password,
-      });
-      this.props.setToken(res.data.token);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.login(this.state.userName, this.state.password);
   };
 
   render() {
@@ -60,13 +50,13 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.token,
+    token: state.auth.token,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setToken: (token) => dispatch({ type: SET_TOKEN, payload: token }),
+    login: (userName, password) => dispatch(login(userName, password)),
   };
 };
 

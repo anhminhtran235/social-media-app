@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
     res.json(req.user.friends);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot get all friends');
   }
 });
 
@@ -66,7 +66,7 @@ router.post('/add', auth, async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot add friend');
   }
 });
 
@@ -101,7 +101,7 @@ router.delete('/remove', auth, async (req, res) => {
     res.json({ msg: 'Unfriend successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot unfriend');
   }
 });
 
@@ -133,7 +133,7 @@ router.delete('/removeRequest', auth, async (req, res) => {
     res.json({ msg: 'Remove friend request successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot cancel this friend request');
   }
 });
 

@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res) => {
     res.json(req.user.notifications);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Cannot get my notifications');
   }
 });
 
@@ -41,7 +41,7 @@ router.post('/', auth, async (req, res) => {
     res.json(noti);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).send('Server error: Test route');
   }
 });
 

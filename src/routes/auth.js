@@ -12,7 +12,7 @@ router.post('/login', async (req, res) => {
 
     const userInDb = await User.findOne({ userName });
     if (!userInDb) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).send('Invalid credentials');
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -20,14 +20,14 @@ router.post('/login', async (req, res) => {
       userInDb.passwordHash
     );
     if (!isPasswordCorrect) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).send('Invalid credentials');
     }
 
     const token = userInDb.generateToken();
     return res.json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).send(error);
+    res.status(500).send('Server error: Cannot login');
   }
 });
 
