@@ -8,6 +8,8 @@ import {
   REGISTER_FAILURE,
   TOKEN_FROM_STORAGE,
 } from '../actionTypes';
+import { loadMyUser } from './usersAction';
+import { updateTokenAxios } from '../../utils/utils';
 
 export const login = (userName, password) => {
   return async (dispatch) => {
@@ -15,6 +17,8 @@ export const login = (userName, password) => {
       const res = await axios.post('/auth/login', { userName, password });
       dispatch({ type: LOGIN_SUCCESS, payload: res.data.token });
       alertify.success('Logged in successfully');
+      updateTokenAxios();
+      dispatch(loadMyUser());
     } catch (error) {
       alertify.error(error.response.data);
       dispatch({ type: LOGIN_FAILURE });
@@ -34,6 +38,8 @@ export const register = (user) => {
       const res = await axios.post('/users', user);
       dispatch({ type: REGISTER_SUCCESS, payload: res.data.token });
       alertify.success('Registered successfully');
+      updateTokenAxios();
+      dispatch(loadMyUser());
     } catch (error) {
       alertify.error(error.response.data);
       dispatch({ type: REGISTER_FAILURE });
