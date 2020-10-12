@@ -25,10 +25,10 @@ router.get('/', async (req, res) => {
 
 // @route   GET /posts/:id
 // @desc    Get all posts from a user
-// @access  Private
-router.get('/:id', auth, async (req, res) => {
+// @access  Public
+router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('posts').exec();
+    const user = await User.findById(req.params.id).populate('posts').exec();
     res.json(user.posts);
   } catch (error) {
     console.error(error);
@@ -52,8 +52,7 @@ router.post('/me/new', auth, async (req, res) => {
 
     user.posts.push(newPost.id);
     await user.save();
-
-    res.json({ msg: 'Create new post successfully' });
+    res.json(newPost);
   } catch (error) {
     console.error(error);
     res.status(500).json('Server Error: Cannot add new post');
@@ -89,7 +88,7 @@ router.post('/comment', auth, async (req, res) => {
       });
     }
 
-    res.json({ msg: 'Add new comment successfully' });
+    res.json(post);
   } catch (error) {
     console.error(error);
     res.status(500).json('Server Error: Cannot add new comment');
@@ -129,7 +128,7 @@ router.post('/like', auth, async (req, res) => {
       });
     }
 
-    res.json({ msg: 'Toggle like successfully' });
+    res.json(post);
   } catch (error) {
     console.error(error);
     res.status(500).json('Server Error: Cannot like/unlike post');

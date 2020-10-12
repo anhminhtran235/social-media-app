@@ -11,9 +11,7 @@ const createNotiAndNotifyUser = async (ownerId, type, data) => {
     });
     await noti.save();
 
-    console.log(ownerId);
     const owner = await User.findById(ownerId);
-    console.log(owner);
     owner.notifications.push(noti.id);
     await owner.save();
 

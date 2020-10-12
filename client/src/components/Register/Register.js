@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { register } from '../../store/actions/authAction';
 
 class Register extends Component {
@@ -26,6 +27,9 @@ class Register extends Component {
   };
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to={'/home'} />;
+    }
     return (
       <Fragment>
         <h1>Register Page!</h1>
@@ -103,4 +107,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

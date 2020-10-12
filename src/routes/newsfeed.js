@@ -29,7 +29,6 @@ router.get('/', auth, async (req, res) => {
     user.friends.forEach((friend) => {
       friend.posts.forEach((post) => {
         posts.push(post);
-        console.log(post);
       });
     });
 

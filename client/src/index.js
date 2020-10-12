@@ -8,15 +8,19 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from './store/rootReducer';
 import thunk from 'redux-thunk';
+import { Router, Route, Link } from 'react-router-dom';
+import history from './utils/history';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Router history={history}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Router>
   </Provider>
 );
 

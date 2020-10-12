@@ -3,15 +3,19 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import Newsfeed from './components/Newsfeed/Newsfeed';
+import Home from './components/Home/Home';
+import MyProfile from './components/Profile/MyProfile';
+import UserProfile from './components/Profile/UserProfile';
 import Register from './components/Register/Register';
 import withWebsocket from './hoc/withWebsocket';
 import { setTokenFromLocalStorage } from './store/actions/authAction';
 import { loadMyUser } from './store/actions/usersAction';
+import { CLEAR_DATA_WHEN_RELOAD } from './store/actionTypes';
 import { updateTokenAxios } from './utils/utils';
 
 class App extends Component {
   componentDidMount() {
+    this.props.clearData();
     this.props.setToken(localStorage.getItem('token'));
     this.props.loadMyUser();
   }
@@ -22,8 +26,10 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route path='/register' component={Register} />
-          <Route path='/home' component={Newsfeed} />
+          <Route path='/register' exact component={Register} />
+          <Route path='/home' exact component={Home} />
+          <Route path='/users/me' exact component={MyProfile} />
+          <Route path='/users/:id' exact component={UserProfile} />
         </Switch>
       </div>
     );
@@ -34,6 +40,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setToken: (token) => dispatch(setTokenFromLocalStorage(token)),
     loadMyUser: () => dispatch(loadMyUser()),
+    clearData: () => dispatch({ type: CLEAR_DATA_WHEN_RELOAD }),
   };
 };
 

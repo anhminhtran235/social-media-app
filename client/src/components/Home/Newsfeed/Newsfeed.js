@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadNewsfeed } from '../../store/actions/postsAction';
-import Post from './Post/Post';
+import { loadNewsfeed } from '../../../store/actions/postsAction';
+import Post from '../../Post/Post';
 
 class Newsfeed extends Component {
   render() {
@@ -15,7 +15,11 @@ class Newsfeed extends Component {
         <h1>Newsfeed route</h1>
         {newsfeed &&
           newsfeed.map((post) => {
-            return <Post key={post._id} post={post} />;
+            let liked =
+              post.likes.findIndex(
+                (likerId) => likerId === this.props.myUser._id
+              ) !== -1;
+            return <Post key={post._id} post={post} liked={liked} />;
           })}
       </div>
     );
@@ -25,6 +29,7 @@ class Newsfeed extends Component {
 const mapStateToProps = (state) => {
   return {
     newsfeedPosts: state.posts.newsfeedPosts,
+    myUser: state.users.myUser,
   };
 };
 

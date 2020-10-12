@@ -118,8 +118,6 @@ router.delete('/removeRequest', auth, async (req, res) => {
       return res.json({ error: 'User does not exist' });
     }
 
-    console.log(me.sentFriendRequests);
-    console.log(otherUserId);
     const index = me.sentFriendRequests.findIndex(
       (id) => id.toString() === otherUserId
     );

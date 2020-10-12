@@ -20,10 +20,8 @@ class Login extends Component {
   };
 
   render() {
-    const token = this.props.token;
     return (
       <Fragment>
-        {token}
         <form onSubmit={this.login}>
           <input
             type='text'

@@ -7,11 +7,14 @@ import {
   LOGOUT,
   TOKEN_FROM_STORAGE,
   LOAD_MY_USER_SUCCESS,
+  IS_AUTHENTICATING,
+  CLEAR_DATA_WHEN_RELOAD,
 } from '../actionTypes';
 
 const initialState = {
   token: null,
   isAuthenticated: false,
+  isAuthenticating: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,11 +25,13 @@ const reducer = (state = initialState, action) => {
       return {
         token: action.payload,
         isAuthenticated: true,
+        isAuthenticating: false,
       };
     case LOAD_MY_USER_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
+        isAuthenticating: false,
       };
     case TOKEN_FROM_STORAGE:
       return {
@@ -41,6 +46,18 @@ const reducer = (state = initialState, action) => {
       return {
         token: null,
         isAuthenticated: false,
+        isAuthenticating: false,
+      };
+    case CLEAR_DATA_WHEN_RELOAD:
+      return {
+        token: null,
+        isAuthenticated: false,
+        isAuthenticating: false,
+      };
+    case IS_AUTHENTICATING:
+      return {
+        ...state,
+        isAuthenticating: true,
       };
     default:
       return state;

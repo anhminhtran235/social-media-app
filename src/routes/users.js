@@ -48,6 +48,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+// @route   GET /users/user/:id
+// @desc    Get user by id
+// @access  Public
+router.get('/user/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select(
+      '-passwordHash -sentFriendRequests -notifications -messages'
+    );
+    if (!user) {
+      return res.status(404).send('Error: User not found');
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Server Error: Cannot get this user data');
+  }
+});
+
 // @route   GET /users/me
 // @desc    Get my user
 // @access  Private
@@ -67,11 +85,9 @@ router.get('/me', auth, (req, res) => {
 // @access  Private
 router.put('/me', auth, async (req, res) => {
   try {
-    const { fullName, password, age, bio } = req.body;
-    const passwordHash = await bcrypt.hash(password, 8);
+    const { fullName, age, bio } = req.body;
     const me = req.user;
     me.fullName = fullName;
-    me.passwordHash = passwordHash;
     me.age = age;
     me.bio = bio;
     await me.save();
