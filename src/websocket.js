@@ -16,9 +16,7 @@ const setupListeners = (io) => {
     socket.on('userId', (userId) => {
       socketIdToUserIdMap.set(socket.id, userId);
       userIdToSocketIdMap.set(userId, socket.id);
-
-      console.log('socketIdToUserIdMap:', socketIdToUserIdMap);
-      console.log('userIdToSocketIdMap:', userIdToSocketIdMap);
+      console.log('Client ' + socket.id + ' sent their userId');
     });
 
     socket.on('message', (message) => {
@@ -37,8 +35,6 @@ const setupListeners = (io) => {
 
 const sendNotification = (toSocketId, notification) => {
   if (toSocketId) {
-    console.log(notification);
-    console.log('Sending notification to ' + toSocketId);
     io.to(toSocketId).emit('notification', notification);
   }
 };

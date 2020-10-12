@@ -12,6 +12,7 @@ import { setTokenFromLocalStorage } from './store/actions/authAction';
 import { loadMyUser } from './store/actions/usersAction';
 import { CLEAR_DATA_WHEN_RELOAD } from './store/actionTypes';
 import { updateTokenAxios } from './utils/utils';
+import Websocket from './components/Websocket';
 
 class App extends Component {
   componentDidMount() {
@@ -31,6 +32,7 @@ class App extends Component {
           <Route path='/users/me' exact component={MyProfile} />
           <Route path='/users/:id' exact component={UserProfile} />
         </Switch>
+        <Websocket socket={this.props.socket} />
       </div>
     );
   }

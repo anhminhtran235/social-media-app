@@ -30,3 +30,7 @@ export const COMMENTED_POST = 'COMMENTED_POST';
 
 // Clear data
 export const CLEAR_DATA_WHEN_RELOAD = 'CLEAR_DATA_WHEN_RELOAD';
+
+// Notification
+export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
+export const NEW_NOTIFICATION = 'NEW_NOTIFICATION';
