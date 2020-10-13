@@ -7,6 +7,7 @@ import {
   LOAD_CURRENTLY_VIEWING_USER_SUCCESS,
   LOAD_CURRENTLY_VIEWING_USER_FAILURE,
   CLEAR_DATA_WHEN_RELOAD,
+  SET_MY_USER,
 } from '../actionTypes';
 
 const initialState = {
@@ -38,12 +39,23 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentlyViewingUser: null,
       };
+    case LOAD_USERS_SUCCESS:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case SET_MY_USER:
+      return {
+        ...state,
+        myUser: action.payload,
+      };
     case CLEAR_DATA_WHEN_RELOAD:
       return {
         myUser: null,
         currentlyViewingUser: null,
         users: null,
       };
+
     default:
       return state;
   }

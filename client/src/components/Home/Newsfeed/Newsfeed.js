@@ -6,6 +6,7 @@ import Post from '../../Post/Post';
 
 class Newsfeed extends Component {
   render() {
+    const myUser = this.props.myUser;
     const newsfeed = this.props.newsfeedPosts;
     if (!newsfeed) {
       this.props.loadNewsfeed();
@@ -13,12 +14,11 @@ class Newsfeed extends Component {
     return (
       <div>
         <h1>Newsfeed route</h1>
-        {newsfeed &&
+        {myUser &&
+          newsfeed &&
           newsfeed.map((post) => {
             let liked =
-              post.likes.findIndex(
-                (likerId) => likerId === this.props.myUser._id
-              ) !== -1;
+              post.likes.findIndex((likerId) => likerId === myUser._id) !== -1;
             return <Post key={post._id} post={post} liked={liked} />;
           })}
       </div>

@@ -13,9 +13,12 @@ const reducer = (state = initialState, action) => {
       };
     case NEW_NOTIFICATION:
       const updatedNotifications = [];
-      state.notifications.forEach((noti) => {
-        updatedNotifications.push({ ...noti });
-      });
+      if (state.notifications) {
+        state.notifications.forEach((noti) => {
+          updatedNotifications.unshift({ ...noti });
+        });
+      }
+
       const newestNotification = action.payload;
       updatedNotifications.unshift(newestNotification);
       return {

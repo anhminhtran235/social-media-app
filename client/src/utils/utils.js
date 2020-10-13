@@ -8,3 +8,15 @@ export const updateTokenAxios = () => {
     delete axios.defaults.headers.common.token;
   }
 };
+
+export const buildUrl = (baseUrl, skip, limit) => {
+  let url = baseUrl;
+  if (skip && limit) {
+    url += '?skip=' + skip + '&limit=' + limit;
+  } else if (skip) {
+    url += '?skip=' + skip;
+  } else if (limit) {
+    url += '?limit' + limit;
+  }
+  return url;
+};

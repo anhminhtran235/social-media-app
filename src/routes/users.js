@@ -10,8 +10,9 @@ const auth = require('../../middleware/auth');
 router.get('/', async (req, res) => {
   try {
     const users = await User.find().select(
-      '-passwordHash -sentFriendRequests -friends -posts -notifications'
+      '-passwordHash -sentFriendRequests -friends -posts -notifications -messages'
     );
+
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -77,6 +78,8 @@ router.get('/me', auth, (req, res) => {
     fullName: user.fullName,
     age: user.age,
     bio: user.bio,
+    friends: user.friends,
+    sentFriendRequests: user.sentFriendRequests,
   });
 });
 

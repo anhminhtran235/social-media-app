@@ -1,5 +1,6 @@
 import axios from 'axios';
 import alertify from '../../utils/alertify';
+import { buildUrl } from '../../utils/utils';
 import {
   ADDED_NEW_POST,
   COMMENTED_POST,
@@ -12,14 +13,8 @@ import {
 
 export const loadNewsfeed = (skip = null, limit = null) => {
   return async (dispatch) => {
-    let url = '/newsfeed';
-    if (skip && limit) {
-      url += '?skip=' + skip + '&limit=' + limit;
-    } else if (skip) {
-      url += '?skip=' + skip;
-    } else if (limit) {
-      url += '?limit' + limit;
-    }
+    const baseUrl = '/newsfeed';
+    const url = buildUrl(baseUrl, skip, limit);
 
     try {
       const res = await axios.get(url);

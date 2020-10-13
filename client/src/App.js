@@ -13,12 +13,15 @@ import { loadMyUser } from './store/actions/usersAction';
 import { CLEAR_DATA_WHEN_RELOAD } from './store/actionTypes';
 import { updateTokenAxios } from './utils/utils';
 import Websocket from './components/Websocket';
+import Explore from './components/Explore/Explore';
+import { getNotifications } from './store/actions/notificationsAction';
 
 class App extends Component {
   componentDidMount() {
     this.props.clearData();
     this.props.setToken(localStorage.getItem('token'));
     this.props.loadMyUser();
+    this.props.getNotifications();
   }
 
   render() {
@@ -29,6 +32,7 @@ class App extends Component {
         <Switch>
           <Route path='/register' exact component={Register} />
           <Route path='/home' exact component={Home} />
+          <Route path='/explore' exact component={Explore} />
           <Route path='/users/me' exact component={MyProfile} />
           <Route path='/users/:id' exact component={UserProfile} />
         </Switch>
@@ -43,6 +47,7 @@ const mapDispatchToProps = (dispatch) => {
     setToken: (token) => dispatch(setTokenFromLocalStorage(token)),
     loadMyUser: () => dispatch(loadMyUser()),
     clearData: () => dispatch({ type: CLEAR_DATA_WHEN_RELOAD }),
+    getNotifications: () => dispatch(getNotifications()),
   };
 };
 

@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
     await req.user.populate({
       path: 'friends',
       select:
-        '-passwordHash -sentFriendRequests -friends -posts -notifications',
+        '-passwordHash -sentFriendRequests -friends -posts -notifications -messages',
     });
     res.json(req.user.friends);
   } catch (error) {
@@ -55,14 +55,14 @@ router.post('/add', auth, async (req, res) => {
       await createNotiAndNotifyUser(otherUserId, FRIEND_REQUEST_ACCEPTED, {
         from: me.id.toString(),
       });
-      return res.json({ msg: 'Friend request accepted' });
+      return res.json(me);
     } else {
       me.sentFriendRequests.push(otherUser.id);
       await me.save();
       await createNotiAndNotifyUser(otherUserId, FRIEND_REQUEST, {
         from: me.id.toString(),
       });
-      return res.json({ msg: 'Friend request sent' });
+      return res.json(me);
     }
   } catch (error) {
     console.error(error);
@@ -105,10 +105,10 @@ router.delete('/remove', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE /friends/removeRequest
+// @route   POST /friends/removeRequest
 // @desc    Remove friend request
 // @access  Private
-router.delete('/removeRequest', auth, async (req, res) => {
+router.post('/removeRequest', auth, async (req, res) => {
   try {
     const { otherUserId } = req.body;
     const me = req.user;
@@ -128,7 +128,7 @@ router.delete('/removeRequest', auth, async (req, res) => {
     }
     me.sentFriendRequests.splice(index, 1);
     await me.save();
-    res.json({ msg: 'Remove friend request successfully' });
+    res.json(me);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error: Cannot cancel this friend request');

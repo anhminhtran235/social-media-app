@@ -56,7 +56,7 @@ const reducer = (state = initialState, action) => {
     case ADDED_NEW_POST:
       const newNewsfeedPosts = [];
       state.newsfeedPosts.forEach((post) => {
-        newNewsfeedPosts.push({ ...post });
+        newNewsfeedPosts.unshift({ ...post });
       });
       const newPost = action.payload;
       newNewsfeedPosts.unshift(newPost);
@@ -69,9 +69,9 @@ const reducer = (state = initialState, action) => {
       const newPosts = [];
       state.newsfeedPosts.forEach((post) => {
         if (post._id === likedPost._id) {
-          newPosts.push(likedPost);
+          newPosts.unshift(likedPost);
         } else {
-          newPosts.push({ ...post });
+          newPosts.unshift({ ...post });
         }
       });
       return {
@@ -83,9 +83,9 @@ const reducer = (state = initialState, action) => {
       const updatedPosts = [];
       state.newsfeedPosts.forEach((post) => {
         if (post._id === commentedPost._id) {
-          updatedPosts.push(commentedPost);
+          updatedPosts.unshift(commentedPost);
         } else {
-          updatedPosts.push({ ...post });
+          updatedPosts.unshift({ ...post });
         }
       });
       return {
