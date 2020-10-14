@@ -23,6 +23,7 @@ class NavOptions extends Component {
             <Link to={'/home'}>Home</Link> <br />
             <Link to={'/users/me'}>My Profile</Link> <br />
             <Link to={'/explore'}>Explore</Link> <br />
+            <Link to={'/message'}>Messages</Link> <br />
             <button onClick={this.logout}>Log out</button>;
           </div>
         );

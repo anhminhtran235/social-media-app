@@ -8,6 +8,7 @@ const PrivateRoute = ({
   authLoading,
   ...rest
 }) => {
+  console.log(isAuthenticated);
   return (
     <Route
       {...rest}

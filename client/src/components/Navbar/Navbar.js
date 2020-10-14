@@ -6,9 +6,9 @@ import Notifications from './Notifications/Notifications';
 class Navbar extends Component {
   render() {
     let notifications = null;
-    if (this.props.isAuthenticated) {
-      notifications = <Notifications />;
-    }
+    // if (this.props.isAuthenticated) {
+    //   notifications = <Notifications />;
+    // }
 
     return (
       <div>

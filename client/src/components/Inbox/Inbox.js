@@ -4,8 +4,10 @@ class Inbox extends Component {
   render() {
     return (
       <Fragment>
-        <p>Inbox</p>
+        <h1>Inbox Component!</h1>
       </Fragment>
     );
   }
 }
+
+export default Inbox;

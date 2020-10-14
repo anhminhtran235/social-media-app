@@ -16,6 +16,7 @@ import Websocket from './components/Websocket';
 import Explore from './components/Explore/Explore';
 import { getNotifications } from './store/actions/notificationsAction';
 import Landing from './components/Landing/Landing';
+import Inbox from './components/Inbox/Inbox';
 import PrivateRoute from './components/routing/PrivateRoute';
 
 updateTokenAxios();
@@ -37,6 +38,7 @@ class App extends Component {
           <Route path='/register' exact component={Register} />
           <PrivateRoute path='/home' exact component={Home} />
           <PrivateRoute path='/explore' exact component={Explore} />
+          <PrivateRoute path='/message' exact component={Inbox} />
           <PrivateRoute path='/users/me' exact component={MyProfile} />
           <PrivateRoute path='/users/:id' exact component={UserProfile} />
         </Switch>

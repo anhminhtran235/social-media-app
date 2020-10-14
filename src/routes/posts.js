@@ -28,7 +28,9 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('posts').exec();
+    const user = await User.findById(req.params.id)
+      .populate('posts')
+      .execPopulate();
     res.json(user.posts);
   } catch (error) {
     console.error(error);

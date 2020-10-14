@@ -13,11 +13,13 @@ const {
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    await req.user.populate({
-      path: 'friends',
-      select:
-        '-passwordHash -sentFriendRequests -friends -posts -notifications -messages',
-    });
+    await req.user
+      .populate({
+        path: 'friends',
+        select:
+          '-passwordHash -sentFriendRequests -friends -posts -notifications -messages',
+      })
+      .execPopulate();
     res.json(req.user.friends);
   } catch (error) {
     console.error(error);

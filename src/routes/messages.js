@@ -42,4 +42,38 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// @route   GET /message
+// @desc    Get all friends and messages from friends
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const me = req.user;
+    await me
+      .populate({
+        path: 'friends',
+        select:
+          '-passwordHash -sentFriendRequests -friends -posts -notifications -messages',
+      })
+      .execPopulate();
+
+    const friends = me.friends;
+    for (let i = 0; i < friends.length; i++) {
+      const messagesFromMe = await Message.find({
+        fromUserId: me._id,
+        toUserId: friends[i]._id,
+      });
+      const messagesToMe = await Message.find({
+        fromUserId: friends[i]._id,
+        toUserId: me._id,
+      });
+      friends[i].messages = messagesFromMe.concat(messagesToMe);
+    }
+
+    res.json(friends);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error: Cannot get messages');
+  }
+});
+
 module.exports = router;
