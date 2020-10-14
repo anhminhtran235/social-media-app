@@ -5,10 +5,8 @@ import { loadUsers } from '../../store/actions/usersAction';
 import PeopleCard from './PeopleCard/PeopleCard';
 
 class Explore extends Component {
-  componentDidUpdate() {
-    if (this.props.myUser && !this.props.users) {
-      this.props.loadUsers();
-    }
+  componentDidMount() {
+    this.props.loadUsers();
   }
   render() {
     let users = null;

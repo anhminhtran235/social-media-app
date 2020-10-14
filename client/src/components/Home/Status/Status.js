@@ -18,6 +18,10 @@ class Status extends Component {
   };
 
   render() {
+    if (!this.props.myUser) {
+      return null;
+    }
+
     return (
       <Fragment>
         <textarea
@@ -25,7 +29,7 @@ class Status extends Component {
           id='post'
           cols='80'
           rows='10'
-          placeholder="What's on your mind?"
+          placeholder={this.props.myUser.userName + ", what's on your mind?"}
           onChange={this.onInputChange}
           value={this.state.post}
         ></textarea>
@@ -35,10 +39,16 @@ class Status extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    myUser: state.users.myUser,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addNewPost: (post) => dispatch(addNewPost(post)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(Status);
+export default connect(mapStateToProps, mapDispatchToProps)(Status);

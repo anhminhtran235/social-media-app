@@ -1,17 +1,31 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import NavOptions from './NavOptions/NavOptions';
 import Notifications from './Notifications/Notifications';
 
-const Navbar = () => {
-  return (
-    <div>
-      <h2>Social media app</h2>
-      <Fragment>
-        <Notifications />
-        <NavOptions />
-      </Fragment>
-    </div>
-  );
+class Navbar extends Component {
+  render() {
+    let notifications = null;
+    if (this.props.isAuthenticated) {
+      notifications = <Notifications />;
+    }
+
+    return (
+      <div>
+        <h2>Social media app</h2>
+        <Fragment>
+          {notifications}
+          <NavOptions />
+        </Fragment>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+  };
 };
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

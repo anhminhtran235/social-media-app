@@ -6,6 +6,10 @@ import Post from '../../Post/Post';
 
 class Newsfeed extends Component {
   render() {
+    if (!this.props.isAuthenticated || this.props.authLoading) {
+      return null;
+    }
+
     const myUser = this.props.myUser;
     const newsfeed = this.props.newsfeedPosts;
     if (!newsfeed) {
@@ -13,7 +17,7 @@ class Newsfeed extends Component {
     }
     return (
       <div>
-        <h1>Newsfeed route</h1>
+        <h1>Newsfeed</h1>
         {myUser &&
           newsfeed &&
           newsfeed.map((post) => {
@@ -30,6 +34,8 @@ const mapStateToProps = (state) => {
   return {
     newsfeedPosts: state.posts.newsfeedPosts,
     myUser: state.users.myUser,
+    isAuthenticated: state.auth.isAuthenticated,
+    authLoading: state.auth.loading,
   };
 };
 

@@ -1,4 +1,9 @@
-import { FETCH_NOTIFICATIONS, NEW_NOTIFICATION } from '../actionTypes';
+import {
+  FETCH_NOTIFICATIONS,
+  NEW_NOTIFICATION,
+  NOTIFICATION_LOADING,
+  CLEAR_DATA,
+} from '../actionTypes';
 
 const initialState = {
   notifications: null,
@@ -15,7 +20,7 @@ const reducer = (state = initialState, action) => {
       const updatedNotifications = [];
       if (state.notifications) {
         state.notifications.forEach((noti) => {
-          updatedNotifications.unshift({ ...noti });
+          updatedNotifications.push({ ...noti });
         });
       }
 
@@ -24,6 +29,10 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         notifications: updatedNotifications,
+      };
+    case CLEAR_DATA:
+      return {
+        notifications: null,
       };
     default:
       return state;

@@ -13,19 +13,18 @@ class MyProfile extends Component {
     bio: '',
   };
 
-  componentDidUpdate() {
-    if (this.props.myUser && !this.props.myPosts) {
-      this.props.loadMyPosts(this.props.myUser._id);
-    }
-    if (this.props.myUser && this.state.userName === '') {
-      const { userName, fullName, age, bio } = this.props.myUser;
-      this.setState({
-        userName,
-        fullName,
-        age,
-        bio,
-      });
-    }
+  componentDidMount() {
+    this.props.loadMyPosts(this.props.myUser._id);
+    let { userName, fullName, age, bio } = this.props.myUser;
+    if (!age) age = '';
+    if (!bio) bio = '';
+
+    this.setState({
+      userName,
+      fullName,
+      age,
+      bio,
+    });
   }
 
   onInputChange = (e) => {

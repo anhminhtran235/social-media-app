@@ -15,7 +15,7 @@ class PeopleCard extends Component {
   render() {
     const myUser = this.props.myUser;
     if (!myUser) return null;
-    console.log(myUser);
+
     const { _id, userName, fullName, bio, age } = this.props.person;
     const isMyFriend = myUser.friends.includes(_id);
     const hasSentFriendRequest = myUser.sentFriendRequests.includes(_id);

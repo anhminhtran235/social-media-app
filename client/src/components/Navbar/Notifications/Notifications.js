@@ -5,10 +5,8 @@ import { getNotifications } from '../../../store/actions/notificationsAction';
 import Notification from './Notification/Notification';
 
 class Notifications extends Component {
-  componentDidUpdate() {
-    if (this.props.isAuthenticated && !this.props.notifications) {
-      this.props.getNotifications();
-    }
+  componentDidMount() {
+    this.props.getNotifications();
   }
 
   render() {

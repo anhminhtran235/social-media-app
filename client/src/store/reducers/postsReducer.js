@@ -5,16 +5,18 @@ import {
   LOAD_A_POST_FAILURE,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
-  CLEAR_DATA_WHEN_RELOAD,
+  CLEAR_DATA,
   ADDED_NEW_POST,
   LIKED_POST,
   COMMENTED_POST,
+  POST_LOADING,
 } from '../actionTypes';
 
 const initialState = {
   currentPost: null,
   currentPosts: null,
   newsfeedPosts: null,
+  loading: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,40 +25,41 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         newsfeedPosts: action.payload,
+        loading: false,
       };
     case LOAD_NEWSFEED_FAILURE:
-      // Do nothing
-      return state;
+      return {
+        ...state,
+        loading: false,
+      };
     case LOAD_A_POST_SUCCESS:
       return {
         ...state,
         currentPost: action.payload,
+        loading: false,
       };
     case LOAD_A_POST_FAILURE:
       return {
         ...state,
         currentPost: null,
+        loading: false,
       };
     case LOAD_POSTS_SUCCESS:
       return {
         ...state,
         currentPosts: action.payload,
+        loading: false,
       };
     case LOAD_POSTS_FAILURE:
       return {
         ...state,
         currentPosts: null,
-      };
-    case CLEAR_DATA_WHEN_RELOAD:
-      return {
-        currentPost: null,
-        currentPosts: null,
-        newsfeedPosts: null,
+        loading: false,
       };
     case ADDED_NEW_POST:
       const newNewsfeedPosts = [];
       state.newsfeedPosts.forEach((post) => {
-        newNewsfeedPosts.unshift({ ...post });
+        newNewsfeedPosts.push({ ...post });
       });
       const newPost = action.payload;
       newNewsfeedPosts.unshift(newPost);
@@ -69,9 +72,9 @@ const reducer = (state = initialState, action) => {
       const newPosts = [];
       state.newsfeedPosts.forEach((post) => {
         if (post._id === likedPost._id) {
-          newPosts.unshift(likedPost);
+          newPosts.push(likedPost);
         } else {
-          newPosts.unshift({ ...post });
+          newPosts.push({ ...post });
         }
       });
       return {
@@ -83,14 +86,26 @@ const reducer = (state = initialState, action) => {
       const updatedPosts = [];
       state.newsfeedPosts.forEach((post) => {
         if (post._id === commentedPost._id) {
-          updatedPosts.unshift(commentedPost);
+          updatedPosts.push(commentedPost);
         } else {
-          updatedPosts.unshift({ ...post });
+          updatedPosts.push({ ...post });
         }
       });
       return {
         ...state,
         newsfeedPosts: updatedPosts,
+      };
+    case POST_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CLEAR_DATA:
+      return {
+        currentPost: null,
+        currentPosts: null,
+        newsfeedPosts: null,
+        loading: false,
       };
     default:
       return state;

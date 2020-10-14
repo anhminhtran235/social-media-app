@@ -8,14 +8,14 @@ import {
   LOAD_USERS_FAILURE,
   LOAD_CURRENTLY_VIEWING_USER_SUCCESS,
   LOAD_CURRENTLY_VIEWING_USER_FAILURE,
-  IS_AUTHENTICATING,
   SET_MY_USER,
+  USER_LOADING,
 } from '../actionTypes';
 
 export const loadMyUser = () => {
   return async (dispatch) => {
     try {
-      dispatch({ type: IS_AUTHENTICATING });
+      dispatch({ type: USER_LOADING });
       const res = await axios.get('/users/me');
       dispatch({ type: LOAD_MY_USER_SUCCESS, payload: res.data });
     } catch (error) {
@@ -39,6 +39,7 @@ export const updateMyProfile = (fullName, age, bio) => {
 export const loadAUser = (id) => {
   return async (dispatch) => {
     try {
+      dispatch({ type: USER_LOADING });
       const res = await axios.get('/users/user/' + id);
       dispatch({
         type: LOAD_CURRENTLY_VIEWING_USER_SUCCESS,
@@ -57,10 +58,12 @@ export const loadUsers = (skip, limit) => {
       const baseUrl = '/users';
       const url = buildUrl(baseUrl, skip, limit);
 
+      dispatch({ type: USER_LOADING });
       const res = await axios.get(url);
       dispatch({ type: LOAD_USERS_SUCCESS, payload: res.data });
     } catch (error) {
       console.log(error);
+      dispatch({ type: LOAD_USERS_FAILURE });
     }
   };
 };

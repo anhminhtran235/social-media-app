@@ -9,6 +9,7 @@ import {
   LOAD_NEWSFEED_SUCCESS,
   LOAD_POSTS_FAILURE,
   LOAD_POSTS_SUCCESS,
+  POST_LOADING,
 } from '../actionTypes';
 
 export const loadNewsfeed = (skip = null, limit = null) => {
@@ -17,6 +18,7 @@ export const loadNewsfeed = (skip = null, limit = null) => {
     const url = buildUrl(baseUrl, skip, limit);
 
     try {
+      dispatch({ type: POST_LOADING });
       const res = await axios.get(url);
       dispatch({ type: LOAD_NEWSFEED_SUCCESS, payload: res.data });
     } catch (error) {
@@ -30,6 +32,7 @@ export const loadNewsfeed = (skip = null, limit = null) => {
 export const loadUserPosts = (userId) => {
   return async (dispatch) => {
     try {
+      dispatch({ type: POST_LOADING });
       const res = await axios.get('/posts/' + userId);
       dispatch({ type: LOAD_POSTS_SUCCESS, payload: res.data });
     } catch (error) {

@@ -16,7 +16,7 @@ class NavOptions extends Component {
 
   render() {
     let options = null;
-    if (!this.props.isAuthenticating) {
+    if (!this.props.authLoading) {
       if (this.props.isAuthenticated) {
         options = (
           <div>
@@ -43,7 +43,7 @@ class NavOptions extends Component {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    isAuthenticating: state.auth.isAuthenticating,
+    authLoading: state.auth.loading,
   };
 };
 
