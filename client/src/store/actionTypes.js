@@ -31,10 +31,15 @@ export const LIKED_POST = 'LIKED_POST';
 export const COMMENTED_POST = 'COMMENTED_POST';
 export const POST_LOADING = 'POST_LOADING';
 
-// Clear data
-export const CLEAR_DATA = 'CLEAR_DATA';
-
 // Notification
 export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
 export const NEW_NOTIFICATION = 'NEW_NOTIFICATION';
 export const NOTIFICATION_LOADING = 'NOTIFICATION_LOADING';
+
+// Messages
+export const FETCH_MESSAGES = 'FETCH_MESSAGES';
+export const NEW_MESSAGE = 'NEW_MESSAGE';
+export const LOAD_CURRENT_MESSAGE_USER = 'LOAD_CURRENT_MESSAGE_USER';
+
+// Clear data
+export const CLEAR_DATA = 'CLEAR_DATA';

@@ -5,14 +5,20 @@ const auth = require('../../middleware/auth');
 const Message = require('../../models/Message');
 const User = require('../../models/User');
 const createNotiAndNotifyUser = require('../utils/notification');
+const { sendMessage } = require('../websocket');
 const { MESSAGE } = require('../utils/notificationType');
 
-// @route   POST /message
+// @route   POST /messages
 // @desc    Send message
 // @access  Private
 router.post('/', auth, async (req, res) => {
   try {
     const { otherUserId, content } = req.body;
+    const otherUser = await User.findById(otherUserId);
+    if (!otherUser) {
+      return res.status(404).send('User does not exist');
+    }
+    const me = req.user;
 
     const message = new Message({
       fromUserId: req.user.id,
@@ -21,28 +27,28 @@ router.post('/', auth, async (req, res) => {
     });
     await message.save();
 
-    const otherUser = await User.findById(otherUserId);
-    const me = req.user;
-
     otherUser.messages.push(message.id);
     me.messages.push(message.id);
 
     otherUser.save();
     me.save();
 
-    await createNotiAndNotifyUser(otherUserId, MESSAGE, {
-      from: req.user.id.toString(),
-      content,
-    });
+    const sendMessageSuccess = sendMessage(message);
+    if (!sendMessageSuccess) {
+      await createNotiAndNotifyUser(otherUserId, MESSAGE, {
+        from: req.user.id.toString(),
+        content,
+      });
+    }
 
-    res.json({ msg: 'Sent successfully' });
+    res.json(message);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error: Cannot send message');
   }
 });
 
-// @route   GET /message
+// @route   GET /messages
 // @desc    Get all friends and messages from friends
 // @access  Private
 router.get('/', auth, async (req, res) => {

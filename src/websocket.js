@@ -16,11 +16,6 @@ const setupListeners = (io) => {
     socket.on('userId', (userId) => {
       socketIdToUserIdMap.set(socket.id, userId);
       userIdToSocketIdMap.set(userId, socket.id);
-      console.log('Client ' + socket.id + ' sent their userId');
-    });
-
-    socket.on('message', (message) => {
-      console.log('Client ' + socket.id + ' says:', message);
     });
 
     socket.on('disconnect', () => {
@@ -39,10 +34,26 @@ const sendNotification = (toSocketId, notification) => {
   }
 };
 
+/**
+ * Return true if user is online and false if not
+ */
+const sendMessage = (message) => {
+  const toUserId = message.toUserId.toString();
+  const toSocketId = userIdToSocketIdMap.get(toUserId);
+  const isReceiverOnline = toSocketId !== null;
+  if (isReceiverOnline) {
+    io.to(toSocketId).emit('message', message);
+    return true;
+  } else {
+    return false;
+  }
+};
+
 module.exports = {
   setupWebsocket,
   io,
   socketIdToUserIdMap,
   userIdToSocketIdMap,
   sendNotification,
+  sendMessage,
 };

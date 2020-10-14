@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { receiveMessage } from '../store/actions/messagesAction';
 import { receivedNewNotification } from '../store/actions/notificationsAction';
+import { NEW_MESSAGE } from '../store/actionTypes';
 
 class Websocket extends Component {
   state = {
@@ -29,7 +31,7 @@ class Websocket extends Component {
 
   listenToSocketEvent = (socket) => {
     socket.on('message', (data) => {
-      console.log(data);
+      this.props.receivedNewMessage(data);
     });
 
     socket.on('notification', (noti) => {
@@ -46,6 +48,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     receivedNewNoti: (notification) =>
       dispatch(receivedNewNotification(notification)),
+    receivedNewMessage: (message) => dispatch(receiveMessage(message)),
   };
 };
 
