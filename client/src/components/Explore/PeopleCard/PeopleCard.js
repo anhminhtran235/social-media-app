@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import {
   addFriend,
   cancelFriendRequest,
+  unfriend,
 } from '../../../store/actions/usersAction';
 import history from '../../../utils/history';
 
 class PeopleCard extends Component {
   navigateToTheirPage = (id) => {
-    history.push('/users/' + id);
+    history.push('/users/me');
   };
 
   render() {
@@ -22,7 +23,9 @@ class PeopleCard extends Component {
 
     let addFriendButton = null;
     if (isMyFriend) {
-      addFriendButton = <button disabled>You two are friends</button>;
+      addFriendButton = (
+        <button onClick={() => this.props.unfriend(_id)}>Unfriend</button>
+      );
     } else if (hasSentFriendRequest) {
       addFriendButton = (
         <button onClick={() => this.props.cancelFriendRequest(_id)}>
@@ -61,6 +64,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addFriend: (id) => dispatch(addFriend(id)),
     cancelFriendRequest: (id) => dispatch(cancelFriendRequest(id)),
+    unfriend: (id) => dispatch(unfriend(id)),
   };
 };
 

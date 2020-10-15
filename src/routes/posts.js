@@ -28,9 +28,7 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate('posts')
-      .execPopulate();
+    const user = await User.findById(req.params.id).populate('posts');
     res.json(user.posts);
   } catch (error) {
     console.error(error);
@@ -61,6 +59,23 @@ router.post('/me/new', auth, async (req, res) => {
   }
 });
 
+// @route   DELETE /posts/:id
+// @desc    Delete a post
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+    await post.deleteOne();
+    res.send('Delete successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).json('Server Error: Cannot delete post');
+  }
+});
+
 // @route   POST /posts/comment
 // @desc    Add new comment
 // @access  Private
@@ -71,7 +86,7 @@ router.post('/comment', auth, async (req, res) => {
 
     const post = await Post.findById(postId);
     if (!post) {
-      res.json({ error: 'Post does not exist' });
+      res.json('Post does not exist');
     }
 
     post.comments.push({
@@ -107,7 +122,7 @@ router.post('/like', auth, async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.json({ error: 'Post does not exist' });
+      return res.json('Post does not exist');
     }
 
     let didLike = false;
@@ -146,13 +161,13 @@ router.post('/comment/like', auth, async (req, res) => {
     const userId = req.user.id;
     const post = await Post.findById(postId);
     if (!post) {
-      return res.json({ error: 'Post does not exist' });
+      return res.json('Post does not exist');
     }
     const commentIndex = post.comments.findIndex(
       (comment) => commentId === comment.id.toString()
     );
     if (commentIndex === -1) {
-      return res.json({ error: 'Comment does not exist' });
+      return res.json('Comment does not exist');
     }
 
     let didLike = false;

@@ -8,6 +8,7 @@ import {
   CLEAR_DATA,
   SET_MY_USER,
   USER_LOADING,
+  ADDED_NEW_POST,
 } from '../actionTypes';
 
 const initialState = {
@@ -59,6 +60,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case ADDED_NEW_POST:
+      const newPost = action.payload;
+      const newUser = { ...state.myUser };
+      newUser.posts.push(newPost._id);
+      return {
+        ...state,
+        newUser,
       };
     case CLEAR_DATA:
       return {

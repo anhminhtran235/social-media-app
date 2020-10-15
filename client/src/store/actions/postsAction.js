@@ -10,6 +10,7 @@ import {
   LOAD_POSTS_FAILURE,
   LOAD_POSTS_SUCCESS,
   POST_LOADING,
+  DELETE_POST,
 } from '../actionTypes';
 
 export const loadNewsfeed = (skip = null, limit = null) => {
@@ -76,6 +77,19 @@ export const commentOnPost = (postId, postOwnerId, content) => {
       const post = res.data;
       dispatch({ type: COMMENTED_POST, payload: post });
     } catch (error) {
+      alertify.error(error.response.data);
+    }
+  };
+};
+
+export const deletePost = (postId) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete('/posts/' + postId);
+      dispatch({ type: DELETE_POST, payload: postId });
+      alertify.success('Post deleted');
+    } catch (error) {
+      console.log(error);
       alertify.error(error.response.data);
     }
   };

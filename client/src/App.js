@@ -38,7 +38,7 @@ class App extends Component {
           <Route path='/register' exact component={Register} />
           <PrivateRoute path='/home' exact component={Home} />
           <PrivateRoute path='/explore' exact component={Explore} />
-          <PrivateRoute path='/message' exact component={Inbox} />
+          <PrivateRoute path='/messages' exact component={Inbox} />
           <PrivateRoute path='/users/me' exact component={MyProfile} />
           <PrivateRoute path='/users/:id' exact component={UserProfile} />
         </Switch>

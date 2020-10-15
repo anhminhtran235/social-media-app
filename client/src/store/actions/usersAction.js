@@ -19,6 +19,7 @@ export const loadMyUser = () => {
       const res = await axios.get('/users/me');
       dispatch({ type: LOAD_MY_USER_SUCCESS, payload: res.data });
     } catch (error) {
+      console.log(error);
       dispatch({ type: LOAD_MY_USER_FAILURE });
     }
   };
@@ -31,6 +32,7 @@ export const updateMyProfile = (fullName, age, bio) => {
       dispatch(loadMyUser());
       alertify.success('Update profile sucessfully');
     } catch (error) {
+      console.log(error);
       alertify.error('Failed. Please try again');
     }
   };
@@ -46,6 +48,7 @@ export const loadAUser = (id) => {
         payload: res.data,
       });
     } catch (error) {
+      console.log(error);
       alertify.error(error.response.data);
       dispatch({ type: LOAD_CURRENTLY_VIEWING_USER_FAILURE });
     }
@@ -75,6 +78,7 @@ export const addFriend = (friendId) => {
       const newMe = res.data;
       dispatch({ type: SET_MY_USER, payload: newMe });
     } catch (error) {
+      console.log(error);
       alertify.error(error.response.data);
     }
   };
@@ -89,6 +93,20 @@ export const cancelFriendRequest = (friendId) => {
       const newMe = res.data;
       dispatch({ type: SET_MY_USER, payload: newMe });
     } catch (error) {
+      console.log(error);
+      alertify.error(error.response.data);
+    }
+  };
+};
+
+export const unfriend = (friendId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.delete('/friends/remove/' + friendId);
+      const newMe = res.data;
+      dispatch({ type: SET_MY_USER, payload: newMe });
+    } catch (error) {
+      console.log(error);
       alertify.error(error.response.data);
     }
   };

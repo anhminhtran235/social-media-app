@@ -36,12 +36,12 @@ router.post('/add', auth, async (req, res) => {
     const me = req.user;
 
     if (me.friends.findIndex((u) => u.id.toString() === otherUserId) !== -1) {
-      return res.json({ error: 'You two are already friends' });
+      return res.json('You two are already friends');
     }
 
     const otherUser = await User.findById(otherUserId);
     if (!otherUser) {
-      return res.json({ error: 'User does not exist' });
+      return res.json('User does not exist');
     }
 
     const index = otherUser.sentFriendRequests.findIndex(
@@ -72,35 +72,33 @@ router.post('/add', auth, async (req, res) => {
   }
 });
 
-// @route   DELETE /friends/remove
+// @route   DELETE /friends/remove/:id
 // @desc    Unfriend
 // @access  Private
-router.delete('/remove', auth, async (req, res) => {
+router.delete('/remove/:id', auth, async (req, res) => {
   try {
-    const { otherUserId } = req.body;
+    const otherUserId = req.params.id;
     const me = req.user;
 
     const otherUser = await User.findById(otherUserId);
     if (!otherUser) {
-      return res.json({ error: 'User does not exist' });
+      return res.json('User does not exist');
     }
 
     const myIndex = me.friends.findIndex(
-      (u) => u.id.toString() === otherUserId
+      (uId) => uId.toString() === otherUserId
     );
     me.friends.splice(myIndex, 1);
     await me.save();
 
-    const otherUserIndex = otherUser.friends.findIndex(
-      (u) => u.id.toString() === me.id.toString()
-    );
+    const otherUserIndex = otherUser.friends.findIndex((uId) => uId === me.id);
     otherUser.friends.splice(otherUserIndex, 1);
     await otherUser.save();
 
     if (myIndex === -1) {
-      return res.json({ msg: 'You two are not friends' });
+      return res.status(400).json('You two are not friends');
     }
-    res.json({ msg: 'Unfriend successfully' });
+    res.json(me);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error: Cannot unfriend');
@@ -117,16 +115,14 @@ router.post('/removeRequest', auth, async (req, res) => {
 
     const otherUser = await User.findById(otherUserId);
     if (!otherUser) {
-      return res.json({ error: 'User does not exist' });
+      return res.json('User does not exist');
     }
 
     const index = me.sentFriendRequests.findIndex(
       (id) => id.toString() === otherUserId
     );
     if (index === -1) {
-      return res.json({
-        error: 'You have not sent this person a friend request',
-      });
+      return res.json('You have not sent this person a friend request');
     }
     me.sentFriendRequests.splice(index, 1);
     await me.save();

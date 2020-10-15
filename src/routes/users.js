@@ -80,6 +80,7 @@ router.get('/me', auth, (req, res) => {
     bio: user.bio,
     friends: user.friends,
     sentFriendRequests: user.sentFriendRequests,
+    posts: user.posts,
   });
 });
 

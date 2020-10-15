@@ -5,8 +5,9 @@ import { loadUserPosts } from '../../store/actions/postsAction';
 import { loadAUser } from '../../store/actions/usersAction';
 import Post from '../Post/Post';
 
-class MyProfile extends Component {
+class UserProfile extends Component {
   componentDidMount() {
+    console.log('HERE');
     const userId = this.props.match.params.id;
     this.props.loadUserPosts(userId);
     this.props.loadAUser(userId);
@@ -54,4 +55,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

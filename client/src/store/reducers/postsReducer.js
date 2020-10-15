@@ -10,6 +10,7 @@ import {
   LIKED_POST,
   COMMENTED_POST,
   POST_LOADING,
+  DELETE_POST,
 } from '../actionTypes';
 
 const initialState = {
@@ -66,6 +67,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         newsfeedPosts: newNewsfeedPosts,
+      };
+    case DELETE_POST:
+      const postId = action.payload;
+      const updatedNewsfeed = state.newsfeedPosts
+        ? state.newsfeedPosts.filter((p) => p._id.toString() !== postId)
+        : null;
+      const updatedCurrentPosts = state.currentPost
+        ? state.currentPosts.filter((p) => p._id.toString() !== postId)
+        : null;
+      return {
+        ...state,
+        newsfeedPosts: updatedNewsfeed,
+        currentPosts: updatedCurrentPosts,
       };
     case LIKED_POST:
       const likedPost = action.payload;
