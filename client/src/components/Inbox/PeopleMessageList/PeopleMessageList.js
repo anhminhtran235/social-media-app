@@ -5,8 +5,16 @@ import { getFriendsWithMessages } from '../../../store/actions/messagesAction';
 import PeopleMessageCard from './PeopleMessageCard/PeopleMessageCard';
 
 class PeopleMessageList extends Component {
+  componentDidUpdate() {
+    if (this.props.isAuthenticated && !this.props.friendWithMessages) {
+      this.props.getFriendsWithMessages();
+    }
+  }
+
   componentDidMount() {
-    this.props.getFriendsWithMessages();
+    if (this.props.isAuthenticated) {
+      this.props.getFriendsWithMessages();
+    }
   }
   render() {
     const friendsWithMessages = this.props.friendsWithMessages;
@@ -23,6 +31,7 @@ class PeopleMessageList extends Component {
 const mapStateToProps = (state) => {
   return {
     friendsWithMessages: state.messages.friendsWithMessages,
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 

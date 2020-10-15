@@ -19,19 +19,27 @@ import Landing from './components/Landing/Landing';
 import Inbox from './components/Inbox/Inbox';
 import PrivateRoute from './components/routing/PrivateRoute';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import reducer from './store/rootReducer';
+import thunk from 'redux-thunk';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+
 updateTokenAxios();
+
+store.dispatch(setTokenFromLocalStorage(localStorage.getItem('token')));
+store.dispatch(loadMyUser());
 
 class App extends Component {
   componentDidMount() {
-    this.props.clearData();
-    this.props.setToken(localStorage.getItem('token'));
-    this.props.loadMyUser();
-    this.props.getNotifications();
+    store.dispatch(getNotifications());
   }
 
   render() {
     return (
-      <div>
+      <Provider store={store}>
         <Navbar />
         <Switch>
           <Route path='/' exact component={Landing} />
@@ -43,18 +51,9 @@ class App extends Component {
           <PrivateRoute path='/users/:id' exact component={UserProfile} />
         </Switch>
         <Websocket socket={this.props.socket} />
-      </div>
+      </Provider>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setToken: (token) => dispatch(setTokenFromLocalStorage(token)),
-    loadMyUser: () => dispatch(loadMyUser()),
-    clearData: () => dispatch({ type: CLEAR_DATA }),
-    getNotifications: () => dispatch(getNotifications()),
-  };
-};
-
-export default withWebsocket(connect(null, mapDispatchToProps)(App));
+export default withWebsocket(App);

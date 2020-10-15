@@ -5,16 +5,26 @@ import { loadNewsfeed } from '../../../store/actions/postsAction';
 import Post from '../../Post/Post';
 
 class Newsfeed extends Component {
+  componentDidUpdate() {
+    if (this.props.isAuthenticated && !this.props.newsfeedPosts) {
+      this.props.loadNewsfeed();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.loadNewsfeed();
+    }
+  }
+
   render() {
-    if (!this.props.isAuthenticated || this.props.authLoading) {
+    if (!this.props.isAuthenticated || !this.props.newsfeedPosts) {
       return null;
     }
 
     const myUser = this.props.myUser;
     const newsfeed = this.props.newsfeedPosts;
-    if (!newsfeed) {
-      this.props.loadNewsfeed();
-    }
+
     return (
       <div>
         <h1>Newsfeed</h1>

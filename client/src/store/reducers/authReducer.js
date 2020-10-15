@@ -14,7 +14,7 @@ import {
 const initialState = {
   token: null,
   isAuthenticated: false,
-  loading: false,
+  loading: true,
 };
 
 const reducer = (state = initialState, action) => {

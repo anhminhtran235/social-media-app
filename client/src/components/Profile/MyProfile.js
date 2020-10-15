@@ -13,7 +13,28 @@ class MyProfile extends Component {
     bio: '',
   };
 
+  componentDidUpdate() {
+    if (!this.props.myPosts && this.props.myUser) {
+      this.props.loadMyPosts(this.props.myUser._id);
+    }
+    if (this.props.myUser && this.state.userName === '') {
+      let { userName, fullName, age, bio } = this.props.myUser;
+      if (!age) age = '';
+      if (!bio) bio = '';
+
+      this.setState({
+        userName,
+        fullName,
+        age,
+        bio,
+      });
+    }
+  }
+
   componentDidMount() {
+    if (!this.props.myUser) {
+      return;
+    }
     this.props.loadMyPosts(this.props.myUser._id);
     let { userName, fullName, age, bio } = this.props.myUser;
     if (!age) age = '';
@@ -40,6 +61,9 @@ class MyProfile extends Component {
   };
 
   render() {
+    if (!this.props.myUser) {
+      return null;
+    }
     const profile = (
       <form onSubmit={this.updateProfile}>
         <label htmlFor='userName'>User name: </label>
