@@ -10,6 +10,7 @@ import Comments from './Comments/Comments';
 class Post extends Component {
   state = {
     comment: '',
+    isCommentOn: false,
   };
 
   onInputChange = (e) => {
@@ -39,14 +40,46 @@ class Post extends Component {
     const iDidLike = this.props.liked;
     const isMine = this.props.isMine;
     return (
-      <div>
-        <p>Author: {author}</p>
-        <p>Content: {content}</p>
-        <p>Likes: {likes.length}</p>
-        <p>Date created: {createdAt}</p>
-        <button onClick={() => this.onToggleLike(_id, author)}>
-          {iDidLike ? 'Unlike' : 'Like'}
-        </button>
+      <div className='mb-4'>
+        <div className='card gedf-card'>
+          <div className='card-header'>
+            <div className='d-flex justify-content-between align-items-center'>
+              <div className='d-flex justify-content-between align-items-center'>
+                <div className='mr-2'>
+                  <img
+                    className='rounded-circle'
+                    width='45'
+                    src='https://picsum.photos/50/50'
+                    alt=''
+                  />
+                </div>
+                <div className='ml-2'>
+                  <div className='h7 text-muted'>{author}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='card-body'>
+            <div className='text-muted h7 mb-2'>
+              {' '}
+              <i className='fa fa-clock-o'></i> 10 min ago
+            </div>
+            <p className='card-text'>{content}</p>
+          </div>
+          <div className='card-footer'>
+            <a
+              className='card-link clickable'
+              onClick={() => this.onToggleLike(_id, author)}
+            >
+              <i className='fa fa-gittip'></i> {'Like (' + likes.length + ')'}
+            </a>
+            <a className='card-link clickable'>
+              <i className='fa fa-comment'></i>{' '}
+              {'Comment (' + comments.length + ')'}
+            </a>
+          </div>
+        </div>
+        {/* 
         <input
           type='text'
           placeholder='Add a comment'
@@ -61,7 +94,7 @@ class Post extends Component {
           </button>
         )}
         <Comments comments={comments} />
-        <p>______________________________________________________</p>
+        <p>______________________________________________________</p> */}
       </div>
     );
   }

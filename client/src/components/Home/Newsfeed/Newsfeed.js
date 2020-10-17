@@ -27,7 +27,7 @@ class Newsfeed extends Component {
 
     return (
       <div>
-        <h1>Newsfeed</h1>
+        <h1 className='text-primary mb-4'>Newsfeed</h1>
         {myUser &&
           newsfeed &&
           newsfeed.map((post) => {

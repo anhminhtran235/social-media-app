@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 import { connect } from 'react-redux';
 import {
   addFriend,
@@ -40,15 +41,15 @@ class PeopleCard extends Component {
 
     return (
       <Fragment>
-        <p>User Name: {userName}</p>
-        <p>Full Name: {fullName}</p>
-        {bio && <p>Bio: {bio}</p>}
-        {age && <p>Age: {age}</p>}
-        {addFriendButton}
-        <button onClick={() => this.navigateToTheirPage(_id)}>
-          Go to their page
-        </button>
-        <p>_______________________________________________</p>
+        <div className='card bg-light mb-3 mr-3 w-25'>
+          <a className='card-header text-primary clickable'>@{userName}</a>
+          <div className='card-body'>
+            <h5 className='card-title text-info'>{fullName}</h5>
+            <p className='card-text'>Age: {age ? age : '(empty)'}</p>
+            <p className='card-text'>Bio: {bio ? bio : '(empty)'}</p>
+            <Button className='btn btn-success'>Add friend</Button>
+          </div>
+        </div>
       </Fragment>
     );
   }

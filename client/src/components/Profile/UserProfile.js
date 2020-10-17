@@ -7,7 +7,6 @@ import Post from '../Post/Post';
 
 class UserProfile extends Component {
   componentDidMount() {
-    console.log('HERE');
     const userId = this.props.match.params.id;
     this.props.loadUserPosts(userId);
     this.props.loadAUser(userId);

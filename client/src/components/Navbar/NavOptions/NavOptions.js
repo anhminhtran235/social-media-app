@@ -6,6 +6,7 @@ import alertify from '../../../utils/alertify';
 import { logout } from '../../../store/actions/authAction';
 import { Link } from 'react-router-dom';
 import history from '../../../utils/history';
+import Button from 'react-bootstrap/esm/Button';
 
 class NavOptions extends Component {
   logout = () => {
@@ -14,25 +15,43 @@ class NavOptions extends Component {
     history.push('/');
   };
 
+  goToRegister = () => {
+    history.push('/register');
+  };
+
   render() {
     let options = null;
     if (!this.props.authLoading) {
       if (this.props.isAuthenticated) {
         options = (
-          <div>
-            <Link to={'/home'}>Home</Link> <br />
-            <Link to={'/users/me'}>My Profile</Link> <br />
-            <Link to={'/explore'}>Explore</Link> <br />
-            <Link to={'/messages'}>Messages</Link> <br />
-            <button onClick={this.logout}>Log out</button>;
+          <div className='d-flex flex-row justify-content-end align-items-center'>
+            <Link to={'/home'} className='mr-2'>
+              Home
+            </Link>{' '}
+            <br />
+            <Link to={'/users/me'} className='mr-2'>
+              My Profile
+            </Link>{' '}
+            <br />
+            <Link to={'/explore'} className='mr-2'>
+              Explore
+            </Link>{' '}
+            <br />
+            <Link to={'/messages'} className='mr-2'>
+              Messages
+            </Link>{' '}
+            <br />
+            <Button className='btn-success' onClick={this.logout}>
+              Log out
+            </Button>
           </div>
         );
       } else {
         options = (
-          <Fragment>
+          <div className='d-flex flex-row justify-content-end align-items-center'>
             <Login />
-            <Link to={'/register'}>Register</Link>
-          </Fragment>
+            <Button onClick={this.goToRegister}>Register</Button>
+          </div>
         );
       }
     }

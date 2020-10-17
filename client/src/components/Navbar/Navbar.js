@@ -11,12 +11,12 @@ class Navbar extends Component {
     // }
 
     return (
-      <div>
-        <h2>Social media app</h2>
-        <Fragment>
+      <div className='d-flex flex-row justify-content-between mt-3 mb-5'>
+        <h2 className='text-primary'>Social media app</h2>
+        <div className='d-flex flex-row justify-content-end'>
           {notifications}
           <NavOptions />
-        </Fragment>
+        </div>
       </div>
     );
   }

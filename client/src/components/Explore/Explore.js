@@ -17,8 +17,8 @@ class Explore extends Component {
     }
     return (
       <Fragment>
-        <h1>Let's add some new friends!</h1>
-        {users}
+        <h1 className='mb-4 text-primary'>Let's add some new friends!</h1>
+        <div className='d-flex flex-wrap'>{users}</div>
       </Fragment>
     );
   }

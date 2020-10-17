@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-
 import { Router, Route, Link } from 'react-router-dom';
 import history from './utils/history';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootswatch/dist/journal/bootstrap.min.css';
 
 const app = (
   <Router history={history}>

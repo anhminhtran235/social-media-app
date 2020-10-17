@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 import { connect } from 'react-redux';
 import { loadUserPosts } from '../../store/actions/postsAction';
 import { updateMyProfile } from '../../store/actions/usersAction';
@@ -65,48 +66,77 @@ class MyProfile extends Component {
       return null;
     }
     const profile = (
-      <form onSubmit={this.updateProfile}>
-        <label htmlFor='userName'>User name: </label>
-        {this.state.userName}
-        <br />
-        <br />
-        <label htmlFor='fullName'>Full name </label>
-        <input
-          type='text'
-          placeholder='Enter your full name'
-          id='fullName'
-          name='fullName'
-          value={this.state.fullName}
-          onChange={this.onInputChange}
-          required={true}
-        />
-        <br />
-        <br />
-        <label htmlFor='age'>Age </label>
-        <input
-          type='number'
-          placeholder='Enter your age'
-          id='age'
-          name='age'
-          value={this.state.age}
-          onChange={this.onInputChange}
-        />
-        <br />
-        <br />
-        <label htmlFor='bio'>Bio </label>
-        <textarea
-          type='text'
-          placeholder='Enter a short bio'
-          id='bio'
-          name='bio'
-          rows={5}
-          cols={30}
-          value={this.state.bio}
-          onChange={this.onInputChange}
-        />
-        <br />
-        <br />
-        <button type='submit'>Update Profile</button>
+      <form onSubmit={this.updateProfile} className='mb-4'>
+        <div className='form-group row'>
+          <label for='userName' className='col-sm-2 col-form-label'>
+            User Name
+          </label>
+          <div className='col-sm-10'>
+            <input
+              type='text'
+              className='form-control'
+              id='userName'
+              name='userName'
+              placeholder='Enter your user name'
+              value={this.state.userName}
+              onChange={this.onInputChange}
+              required={true}
+              disabled
+            />
+          </div>
+        </div>
+        <div className='form-group row'>
+          <label for='fullName' className='col-sm-2 col-form-label'>
+            Full Name
+          </label>
+          <div className='col-sm-10'>
+            <input
+              type='text'
+              className='form-control'
+              id='fullName'
+              name='fullName'
+              placeholder='Enter your full name'
+              value={this.state.fullName}
+              onChange={this.onInputChange}
+              required={true}
+            />
+          </div>
+        </div>
+        <div className='form-group row'>
+          <label for='age' className='col-sm-2 col-form-label'>
+            Age
+          </label>
+          <div className='col-sm-10'>
+            <input
+              type='number'
+              className='form-control'
+              id='age'
+              name='age'
+              placeholder='Enter your age'
+              value={this.state.age}
+              onChange={this.onInputChange}
+            />
+          </div>
+        </div>
+        <div className='form-group row'>
+          <label for='bio' className='col-sm-2 col-form-label'>
+            Bio
+          </label>
+          <div className='col-sm-10'>
+            <textarea
+              type='text'
+              className='form-control'
+              id='bio'
+              name='bio'
+              placeholder='Enter your bio'
+              value={this.state.bio}
+              onChange={this.onInputChange}
+            />
+          </div>
+        </div>
+        <Button className='btn-success' type='submit'>
+          Update profile
+        </Button>
       </form>
     );
 

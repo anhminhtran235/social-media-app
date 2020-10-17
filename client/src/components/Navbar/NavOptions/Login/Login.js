@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 import { connect } from 'react-redux';
 import { login } from '../../../../store/actions/authAction';
 
@@ -22,24 +23,33 @@ class Login extends Component {
   render() {
     return (
       <Fragment>
-        <form onSubmit={this.login}>
-          <input
-            type='text'
-            placeholder={'Your username'}
-            name='userName'
-            onChange={this.onInputChange}
-            value={this.state.userName}
-            required={true}
-          />
-          <input
-            type='password'
-            placeholder={'Your password'}
-            name='password'
-            onChange={this.onInputChange}
-            value={this.state.password}
-            required={true}
-          />
-          <button type='submit'>Login</button>
+        <form className='form-inline' onSubmit={this.login}>
+          <div>
+            <input
+              type='text'
+              placeholder={'Your username'}
+              name='userName'
+              onChange={this.onInputChange}
+              value={this.state.userName}
+              required={true}
+              className='form-control  mr-1'
+            />
+          </div>
+          <div>
+            <input
+              type='password'
+              placeholder={'Your password'}
+              name='password'
+              onChange={this.onInputChange}
+              value={this.state.password}
+              required={true}
+              className='form-control  mr-1'
+            />
+          </div>
+
+          <Button className='btn-success mr-1' type='submit'>
+            Login
+          </Button>
         </form>
       </Fragment>
     );
