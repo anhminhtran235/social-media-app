@@ -25,17 +25,30 @@ class PeopleCard extends Component {
     let addFriendButton = null;
     if (isMyFriend) {
       addFriendButton = (
-        <button onClick={() => this.props.unfriend(_id)}>Unfriend</button>
+        <Button
+          className='btn-primary'
+          onClick={() => this.props.unfriend(_id)}
+        >
+          Unfriend
+        </Button>
       );
     } else if (hasSentFriendRequest) {
       addFriendButton = (
-        <button onClick={() => this.props.cancelFriendRequest(_id)}>
+        <Button
+          className='btn-primary'
+          onClick={() => this.props.cancelFriendRequest(_id)}
+        >
           Unsend friend request
-        </button>
+        </Button>
       );
     } else {
       addFriendButton = (
-        <button onClick={() => this.props.addFriend(_id)}>Add friend</button>
+        <Button
+          className='btn-success'
+          onClick={() => this.props.addFriend(_id)}
+        >
+          Add friend
+        </Button>
       );
     }
 
@@ -47,7 +60,7 @@ class PeopleCard extends Component {
             <h5 className='card-title text-info'>{fullName}</h5>
             <p className='card-text'>Age: {age ? age : '(empty)'}</p>
             <p className='card-text'>Bio: {bio ? bio : '(empty)'}</p>
-            <Button className='btn btn-success'>Add friend</Button>
+            {addFriendButton}
           </div>
         </div>
       </Fragment>

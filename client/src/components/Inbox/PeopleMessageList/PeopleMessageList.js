@@ -6,7 +6,7 @@ import PeopleMessageCard from './PeopleMessageCard/PeopleMessageCard';
 
 class PeopleMessageList extends Component {
   componentDidUpdate() {
-    if (this.props.isAuthenticated && !this.props.friendWithMessages) {
+    if (this.props.isAuthenticated && !this.props.friendsWithMessages) {
       this.props.getFriendsWithMessages();
     }
   }
@@ -24,7 +24,16 @@ class PeopleMessageList extends Component {
         return <PeopleMessageCard key={fwm._id} friendMessages={fwm} />;
       });
     }
-    return peopleCards;
+    return (
+      <div className='inbox_people'>
+        <div className='headind_srch'>
+          <div className='recent_heading'>
+            <h4>Recent</h4>
+          </div>
+        </div>
+        <div className='inbox_chat'>{peopleCards}</div>
+      </div>
+    );
   }
 }
 

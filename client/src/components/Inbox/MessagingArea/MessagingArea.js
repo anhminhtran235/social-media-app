@@ -3,11 +3,24 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { sendMessage } from '../../../store/actions/messagesAction';
 import Messages from './Messages/Messages';
+import '../inbox.css';
 
 class MessagingArea extends Component {
   state = {
     message: '',
   };
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    this.el.scrollIntoView({ behavior: 'smooth' });
+  }
 
   onInputChange = (e) => {
     this.setState({
@@ -19,6 +32,7 @@ class MessagingArea extends Component {
     const receiverId = this.props.currentUserId;
     const content = this.state.message;
     this.props.sendMessage(receiverId, content);
+    this.setState({ message: '' });
   };
 
   render() {
@@ -32,24 +46,44 @@ class MessagingArea extends Component {
     let messages = null;
     if (currentUser) {
       messages = <Messages messages={currentUser.messages} />;
+    } else {
+      const firstUserWithMessages = this.props.usersWithMessages;
+      if (firstUserWithMessages && firstUserWithMessages.length > 0) {
+        const mes = firstUserWithMessages[0].messages;
+        messages = <Messages messages={mes} />;
+      }
     }
+
     return (
-      <Fragment>
-        <h2>Messaging Area</h2>
-        <p>Current user: {currentUser && currentUser._id}</p>
-        {messages}
-        <textarea
-          type='text'
-          placeholder='Enter your message here'
-          rows='5'
-          cols='30'
-          name='message'
-          required
-          onChange={this.onInputChange}
-          value={this.state.message}
+      <div className='mesgs'>
+        <div className='msg_history'>{messages}</div>
+        <div className='type_msg'>
+          <div className='input_msg_write'>
+            <input
+              type='text'
+              className='write_msg'
+              placeholder='Type a message'
+              value={this.state.message}
+              onChange={this.onInputChange}
+              name='message'
+            />
+            <button
+              className='msg_send_btn'
+              type='button'
+              onClick={this.sendMessage}
+            >
+              <i className='fa fa-paper-plane-o' aria-hidden='true'></i>
+            </button>
+          </div>
+        </div>
+
+        {/* For scrolling */}
+        <div
+          ref={(el) => {
+            this.el = el;
+          }}
         />
-        <button onClick={this.sendMessage}>Send</button>
-      </Fragment>
+      </div>
     );
   }
 }

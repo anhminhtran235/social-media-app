@@ -1,12 +1,19 @@
 import React from 'react';
 import { Component } from 'react';
 import MessageBubble from './MessageBubble/MessageBubble';
+import '../../inbox.css';
 
 class Messages extends Component {
   render() {
     const messages = this.props.messages;
+
+    console.log(messages);
     return messages.map((message) => {
-      return <MessageBubble key={message._id} message={message} />;
+      return (
+        <div key={message._id}>
+          <MessageBubble message={message} />
+        </div>
+      );
     });
   }
 }

@@ -1,0 +1,10 @@
+.peopleMessageCard {
+  background: rgb(206, 206, 206);
+  border: solid grey 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.peopleMessageCard:hover {
+  background: rgb(156, 156, 156);
+}
