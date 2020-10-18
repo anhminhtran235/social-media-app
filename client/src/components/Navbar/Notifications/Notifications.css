@@ -1,0 +1,4 @@
+.noti-scrollable {
+  height: 300px;
+  overflow-y: scroll;
+}

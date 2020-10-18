@@ -7,6 +7,7 @@ import { logout } from '../../../store/actions/authAction';
 import { Link } from 'react-router-dom';
 import history from '../../../utils/history';
 import Button from 'react-bootstrap/esm/Button';
+import Notifications from '../Notifications/Notifications';
 
 class NavOptions extends Component {
   logout = () => {
@@ -28,19 +29,16 @@ class NavOptions extends Component {
             <Link to={'/home'} className='mr-2'>
               Home
             </Link>{' '}
-            <br />
             <Link to={'/users/me'} className='mr-2'>
               My Profile
             </Link>{' '}
-            <br />
             <Link to={'/explore'} className='mr-2'>
               Explore
             </Link>{' '}
-            <br />
             <Link to={'/messages'} className='mr-2'>
               Messages
             </Link>{' '}
-            <br />
+            <Notifications />
             <Button className='btn-success' onClick={this.logout}>
               Log out
             </Button>

@@ -3,6 +3,8 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { getNotifications } from '../../../store/actions/notificationsAction';
 import Notification from './Notification/Notification';
+import { Dropdown } from 'react-bootstrap';
+import './Notifications.css';
 
 class Notifications extends Component {
   componentDidMount() {
@@ -13,10 +15,23 @@ class Notifications extends Component {
     let notifications = null;
     if (this.props.notifications) {
       notifications = this.props.notifications.map((noti) => {
-        return <Notification notification={noti} key={noti._id} />;
+        return (
+          <Dropdown.Item>
+            <Notification notification={noti} key={noti._id} />
+          </Dropdown.Item>
+        );
       });
     }
-    return notifications;
+    return (
+      <Dropdown>
+        <Dropdown.Toggle variant='success' id='dropdown-basic'>
+          Notification
+        </Dropdown.Toggle>
+        <Dropdown.Menu className='noti-scrollable'>
+          {notifications}
+        </Dropdown.Menu>
+      </Dropdown>
+    );
   }
 }
 

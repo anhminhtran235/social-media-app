@@ -24,7 +24,6 @@ export const loadNewsfeed = (skip = null, limit = null) => {
       dispatch({ type: LOAD_NEWSFEED_SUCCESS, payload: res.data });
     } catch (error) {
       console.log(error);
-      alertify.error(error.response.data);
       dispatch({ type: LOAD_NEWSFEED_FAILURE });
     }
   };
