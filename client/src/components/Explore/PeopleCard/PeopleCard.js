@@ -7,11 +7,11 @@ import {
   cancelFriendRequest,
   unfriend,
 } from '../../../store/actions/usersAction';
-import history from '../../../utils/history';
+import { withRouter } from 'react-router-dom';
 
 class PeopleCard extends Component {
   navigateToTheirPage = (id) => {
-    history.push('/users/me');
+    this.props.history.push('/users/' + id);
   };
 
   render() {
@@ -55,7 +55,12 @@ class PeopleCard extends Component {
     return (
       <Fragment>
         <div className='card bg-light mb-3 mr-3 w-25'>
-          <a className='card-header text-primary clickable'>@{userName}</a>
+          <a
+            className='card-header text-primary clickable'
+            onClick={() => this.navigateToTheirPage(_id)}
+          >
+            @{userName}
+          </a>
           <div className='card-body'>
             <h5 className='card-title text-info'>{fullName}</h5>
             <p className='card-text'>Age: {age ? age : '(empty)'}</p>
@@ -82,4 +87,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PeopleCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(PeopleCard));

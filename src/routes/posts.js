@@ -141,6 +141,7 @@ router.post('/like', auth, async (req, res) => {
     const isOwner = userId.toString() === postOwnerId;
     if (!isOwner && didLike) {
       await createNotiAndNotifyUser(postOwnerId, LIKE_POST, {
+        content: post.content,
         from: userId.toString(),
       });
     }
@@ -185,6 +186,7 @@ router.post('/comment/like', auth, async (req, res) => {
     const isOwner = userId.toString() === commentOwnerId;
     if (!isOwner && didLike) {
       await createNotiAndNotifyUser(commentOwnerId, LIKE_COMMENT, {
+        content: comment.content,
         from: userId.toString(),
       });
     }

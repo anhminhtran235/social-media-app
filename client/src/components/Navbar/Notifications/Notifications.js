@@ -16,16 +16,21 @@ class Notifications extends Component {
     if (this.props.notifications) {
       notifications = this.props.notifications.map((noti) => {
         return (
-          <Dropdown.Item>
-            <Notification notification={noti} key={noti._id} />
+          <Dropdown.Item key={noti._id}>
+            <Notification notification={noti} />
           </Dropdown.Item>
         );
       });
     }
     return (
       <Dropdown>
-        <Dropdown.Toggle variant='success' id='dropdown-basic'>
-          Notification
+        <Dropdown.Toggle
+          className='caret-off mr-2 px-2 py-1'
+          variant='primary'
+          id='dropdown-basic'
+        >
+          <i className='fas fa-bell'></i>{' '}
+          {notifications ? '(' + notifications.length + ')' : null}
         </Dropdown.Toggle>
         <Dropdown.Menu className='noti-scrollable'>
           {notifications}

@@ -1,3 +1,7 @@
 .clickable {
   cursor: pointer;
 }
+
+body {
+  background: rgb(200, 220, 231) !important;
+}

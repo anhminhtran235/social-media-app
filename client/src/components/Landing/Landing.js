@@ -2,13 +2,23 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import './Landing.css';
+import LandingImage from '../../assets/images/working-at-living-room.svg';
 
 class Landing extends Component {
   render() {
     if (this.props.isAuthenticated) {
       return <Redirect to='/home' />;
     }
-    return <h1>Landing page</h1>;
+    return (
+      <div className='landing d-flex '>
+        <img className='landing-image' src={LandingImage} className='w-50' />
+        <div className='w-50 d-flex flex-column justify-content-center align-items-center text-justify'>
+          <h1 className='text-primary'>Connect with the world</h1>
+          <h1 className='text-primary'>Right now!</h1>
+        </div>
+      </div>
+    );
   }
 }
 

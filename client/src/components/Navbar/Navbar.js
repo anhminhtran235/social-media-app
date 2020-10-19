@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import NavOptions from './NavOptions/NavOptions';
-import Notifications from './Notifications/Notifications';
 
 class Navbar extends Component {
   render() {

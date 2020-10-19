@@ -1,17 +1,25 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
+import { notiToMessage } from './notificationHandler';
+import './Notification.css';
 
 class Notification extends Component {
   render() {
     const { _id, createdAt, data, read, type } = this.props.notification;
+    const content = data.from + ' ' + notiToMessage(type, data);
+    console.log(data);
     return (
-      <Fragment>
-        <p>Data: {JSON.stringify(data)}</p>
-        <p>Read: {read ? 'true' : 'false'}</p>
-        <p>type: {type}</p>
-        <p>createdAt: {createdAt}</p>
-        <p>_____________________________________________</p>
-      </Fragment>
+      <div className='d-flex noti-card'>
+        <img
+          className='rounded-circle mr-2 avatar-image'
+          src='https://picsum.photos/50/50'
+          alt=''
+        />
+        <div>
+          <h6 className='card-title'>{_id}</h6>
+          <p className='card-text'>{content}</p>
+        </div>
+      </div>
     );
   }
 }

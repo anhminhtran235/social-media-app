@@ -5,19 +5,19 @@ import { connect } from 'react-redux';
 import alertify from '../../../utils/alertify';
 import { logout } from '../../../store/actions/authAction';
 import { Link } from 'react-router-dom';
-import history from '../../../utils/history';
 import Button from 'react-bootstrap/esm/Button';
 import Notifications from '../Notifications/Notifications';
+import { withRouter } from 'react-router';
 
 class NavOptions extends Component {
   logout = () => {
     this.props.logout();
-    alertify.message('Logged out');
-    history.push('/');
+    alertify.error('Logged out');
+    this.props.history.push('/');
   };
 
   goToRegister = () => {
-    history.push('/register');
+    this.props.history.push('/register');
   };
 
   render() {
@@ -71,4 +71,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavOptions);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NavOptions));

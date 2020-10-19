@@ -23,6 +23,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from './store/rootReducer';
 import thunk from 'redux-thunk';
+import './index.css';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
@@ -40,17 +41,19 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div className='container'>
-          <Navbar />
-          <Switch>
-            <Route path='/' exact component={Landing} />
-            <Route path='/register' exact component={Register} />
-            <PrivateRoute path='/home' exact component={Home} />
-            <PrivateRoute path='/explore' exact component={Explore} />
-            <PrivateRoute path='/messages' exact component={Inbox} />
-            <PrivateRoute path='/users/me' exact component={MyProfile} />
-            <PrivateRoute path='/users/:id' exact component={UserProfile} />
-          </Switch>
+        <div>
+          <div className='container'>
+            <Navbar />
+            <Switch>
+              <Route path='/' exact component={Landing} />
+              <Route path='/register' exact component={Register} />
+              <PrivateRoute path='/home' exact component={Home} />
+              <PrivateRoute path='/explore' exact component={Explore} />
+              <PrivateRoute path='/messages' exact component={Inbox} />
+              <PrivateRoute path='/users/me' exact component={MyProfile} />
+              <PrivateRoute path='/users/:id' exact component={UserProfile} />
+            </Switch>
+          </div>
         </div>
         <Websocket socket={this.props.socket} />
       </Provider>
