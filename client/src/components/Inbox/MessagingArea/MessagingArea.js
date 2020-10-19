@@ -10,16 +10,15 @@ class MessagingArea extends Component {
     message: '',
   };
 
-  componentDidMount() {
-    this.scrollToBottom();
-  }
+  scrollBottom = () => {
+    const message_tab = document.getElementById('message-tab');
+    message_tab.scrollTop = message_tab.scrollHeight;
+  };
 
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    this.el.scrollIntoView({ behavior: 'smooth' });
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      setTimeout(() => this.scrollBottom(), 10);
+    }
   }
 
   onInputChange = (e) => {
@@ -56,7 +55,9 @@ class MessagingArea extends Component {
 
     return (
       <div className='mesgs'>
-        <div className='msg_history'>{messages}</div>
+        <div className='msg_history' id='message-tab'>
+          {messages}
+        </div>
         <div className='type_msg'>
           <div className='input_msg_write'>
             <input
@@ -76,13 +77,6 @@ class MessagingArea extends Component {
             </button>
           </div>
         </div>
-
-        {/* For scrolling */}
-        <div
-          ref={(el) => {
-            this.el = el;
-          }}
-        />
       </div>
     );
   }
