@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const Notification = require('../../models/Notification');
+const auth = require('../middleware/auth');
+const Notification = require('../models/Notification');
 
 // @route   GET /notifications?skip=5&limit=3
 // @desc    Get notifications

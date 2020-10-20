@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const User = require('../../models/User');
+const auth = require('../middleware/auth');
+const User = require('../models/User');
 const createNotiAndNotifyUser = require('../utils/notification');
 const {
   FRIEND_REQUEST,

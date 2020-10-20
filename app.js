@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDb = require('../config/db');
+const connectDb = require('./config/db');
 const http = require('http');
 const { setupWebsocket } = require('./websocket');
 const path = require('path');
@@ -24,10 +24,10 @@ app.use('/messages', require('./routes/messages'));
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   console.log('HERE!!!!!');
-  app.use(express.static('../client/build'));
+  app.use(express.static('client/build'));
 
-  app.get('../*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 

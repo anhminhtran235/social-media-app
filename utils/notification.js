@@ -1,6 +1,6 @@
 const { userIdToSocketIdMap, sendNotification } = require('../websocket');
-const Notification = require('../../models/Notification');
-const User = require('../../models/User');
+const Notification = require('../models/Notification');
+const User = require('../models/User');
 const mongoose = require('mongoose');
 const createNotiAndNotifyUser = async (ownerId, type, data) => {
   try {

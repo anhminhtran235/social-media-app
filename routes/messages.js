@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const Message = require('../../models/Message');
-const User = require('../../models/User');
+const auth = require('../middleware/auth');
+const Message = require('../models/Message');
+const User = require('../models/User');
 const createNotiAndNotifyUser = require('../utils/notification');
 const { sendMessage } = require('../websocket');
 const { MESSAGE } = require('../utils/notificationType');

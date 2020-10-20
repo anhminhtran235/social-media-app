@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const Post = require('../../models/Post');
-const User = require('../../models/User');
+const auth = require('../middleware/auth');
+const Post = require('../models/Post');
+const User = require('../models/User');
 const {
   LIKE_POST,
   LIKE_COMMENT,
