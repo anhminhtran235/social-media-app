@@ -23,7 +23,7 @@ app.use('/messages', require('./routes/messages'));
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use(express.static('client/build'));
+  app.use(express.static('../client/build'));
 
   // Serve file
   app.get('*', (req, res) => {
