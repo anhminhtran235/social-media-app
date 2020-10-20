@@ -21,6 +21,7 @@ class PeopleCard extends Component {
     const { _id, userName, fullName, bio, age } = this.props.person;
     const isMyFriend = myUser.friends.includes(_id);
     const hasSentFriendRequest = myUser.sentFriendRequests.includes(_id);
+    const hasSentMeFriendRequest = this.props.hasSentMeFriendRequest;
 
     let addFriendButton = null;
     if (isMyFriend) {
@@ -39,6 +40,15 @@ class PeopleCard extends Component {
           onClick={() => this.props.cancelFriendRequest(_id)}
         >
           Unsend friend request
+        </Button>
+      );
+    } else if (hasSentMeFriendRequest) {
+      addFriendButton = (
+        <Button
+          className='btn-success'
+          onClick={() => this.props.addFriend(_id)}
+        >
+          Accept friend request
         </Button>
       );
     } else {

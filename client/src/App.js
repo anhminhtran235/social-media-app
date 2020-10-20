@@ -8,10 +8,7 @@ import MyProfile from './components/Profile/MyProfile';
 import UserProfile from './components/Profile/UserProfile';
 import Register from './components/Register/Register';
 import withWebsocket from './hoc/withWebsocket';
-import { setTokenFromLocalStorage } from './store/actions/authAction';
-import { loadMyUser } from './store/actions/usersAction';
-import { CLEAR_DATA } from './store/actionTypes';
-import { updateTokenAxios } from './utils/utils';
+
 import Websocket from './components/Websocket';
 import Explore from './components/Explore/Explore';
 import { getNotifications } from './store/actions/notificationsAction';
@@ -19,28 +16,33 @@ import Landing from './components/Landing/Landing';
 import Inbox from './components/Inbox/Inbox';
 import PrivateRoute from './components/routing/PrivateRoute';
 
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import reducer from './store/rootReducer';
-import thunk from 'redux-thunk';
 import './index.css';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
-
-updateTokenAxios();
-
-store.dispatch(setTokenFromLocalStorage(localStorage.getItem('token')));
-store.dispatch(loadMyUser());
+import { getFriendsWithMessages } from './store/actions/messagesAction';
 
 class App extends Component {
+  componentDidUpdate() {
+    if (!this.props.notifications) {
+      this.props.loadNotifications();
+    }
+    if (!this.props.friendsWithMessages) {
+      this.props.loadFriendsWithMessages();
+    }
+  }
+
   componentDidMount() {
-    store.dispatch(getNotifications());
+    if (this.props.isAuthenticated) {
+      if (!this.props.notifications) {
+        this.props.loadNotifications();
+      }
+      if (!this.props.friendsWithMessages) {
+        this.props.loadFriendsWithMessages();
+      }
+    }
   }
 
   render() {
     return (
-      <Provider store={store}>
+      <div>
         <div>
           <div className='container'>
             <Navbar />
@@ -56,9 +58,25 @@ class App extends Component {
           </div>
         </div>
         <Websocket socket={this.props.socket} />
-      </Provider>
+      </div>
     );
   }
 }
 
-export default withWebsocket(App);
+const mapStateToProps = (state) => {
+  return {
+    notifications: state.notifications.notifications,
+    friendsWithMessages: state.messages.friendsWithMessages,
+    isAuthenticated: state.auth.isAuthenticated,
+    myUser: state.users.myUser,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadFriendsWithMessages: () => dispatch(getFriendsWithMessages()),
+    loadNotifications: () => dispatch(getNotifications()),
+  };
+};
+
+export default withWebsocket(connect(mapStateToProps, mapDispatchToProps)(App));

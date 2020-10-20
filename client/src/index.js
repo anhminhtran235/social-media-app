@@ -12,12 +12,31 @@ import $ from 'jquery';
 import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
+import { createStore, applyMiddleware, compose } from 'redux';
+import reducer from './store/rootReducer';
+import thunk from 'redux-thunk';
+import { setTokenFromLocalStorage } from './store/actions/authAction';
+import { loadMyUser } from './store/actions/usersAction';
+import { CLEAR_DATA } from './store/actionTypes';
+import { updateTokenAxios } from './utils/utils';
+import { Provider } from 'react-redux';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+
+updateTokenAxios();
+
+store.dispatch(setTokenFromLocalStorage(localStorage.getItem('token')));
+store.dispatch(loadMyUser());
+
 const app = (
-  <Router history={history}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Router>
+  <Provider store={store}>
+    <Router history={history}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Router>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

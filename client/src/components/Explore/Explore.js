@@ -12,12 +12,24 @@ class Explore extends Component {
     let users = null;
     if (this.props.users) {
       users = this.props.users.map((user) => {
-        return <PeopleCard key={user._id} person={user} />;
+        if (user._id === this.props.myUser._id) {
+          return null;
+        }
+        const hasSentMeFriendRequest = user.sentFriendRequests.includes(
+          this.props.myUser._id
+        );
+        return (
+          <PeopleCard
+            key={user._id}
+            person={user}
+            hasSentMeFriendRequest={hasSentMeFriendRequest}
+          />
+        );
       });
     }
     return (
       <Fragment>
-        <h1 className='mb-4 text-primary'>Let's add some new friends!</h1>
+        <h1 className='mb-4 text-primary'>Let's see other people's profile</h1>
         <div className='d-flex flex-wrap'>{users}</div>
       </Fragment>
     );

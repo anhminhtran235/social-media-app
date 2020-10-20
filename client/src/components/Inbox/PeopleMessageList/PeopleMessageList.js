@@ -12,7 +12,7 @@ class PeopleMessageList extends Component {
   }
 
   componentDidMount() {
-    if (this.props.isAuthenticated) {
+    if (this.props.isAuthenticated && !this.props.friendsWithMessages) {
       this.props.getFriendsWithMessages();
     }
   }

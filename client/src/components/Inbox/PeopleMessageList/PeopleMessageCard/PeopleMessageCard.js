@@ -1,19 +1,35 @@
 import React, { Fragment } from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { markReadConversation } from '../../../../store/actions/messagesAction';
 import { LOAD_CURRENT_MESSAGE_USER } from '../../../../store/actionTypes';
 import '../../inbox.css';
 
 class PeopleMessageCard extends Component {
   render() {
     const { _id, userName, messages } = this.props.friendMessages;
-    let topMessage = null;
+    let read = this.props.friendMessages.read;
+    let latestMessage = null;
     if (messages.length > 0) {
-      topMessage = messages[0].content;
+      latestMessage = messages[messages.length - 1].content;
+      if (latestMessage.length > 20) {
+        latestMessage = latestMessage.substring(0, 40) + '...';
+      }
+    }
+    const classNames = ['chat_list', 'clickable'];
+    if (_id === this.props.currentlyViewingUserId) {
+      classNames.push('active_chat');
+      if (!read) {
+        this.props.markReadConversation(_id);
+        read = true;
+      }
     }
 
     return (
-      <div className='chat_list active_chat'>
+      <div
+        className={classNames.join(' ')}
+        onClick={() => this.props.chooseUser(_id)}
+      >
         <div className='chat_people'>
           <div className='chat_img'>
             {' '}
@@ -24,9 +40,15 @@ class PeopleMessageCard extends Component {
           </div>
           <div className='chat_ib'>
             <h5>
-              {userName} <span className='chat_date'>Dec 25</span>
+              {userName}{' '}
+              <span>
+                Dec 25{'  '}
+                <span className='text-primary'>
+                  {read ? null : ' (unread)'}
+                </span>
+              </span>
             </h5>
-            <p>{topMessage}</p>
+            <p>{latestMessage}</p>
           </div>
         </div>
       </div>
@@ -34,11 +56,19 @@ class PeopleMessageCard extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    currentlyViewingUserId: state.messages.currentlyViewingUserId,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     chooseUser: (id) =>
       dispatch({ type: LOAD_CURRENT_MESSAGE_USER, payload: id }),
+    markReadConversation: (otherUserId) =>
+      dispatch(markReadConversation(otherUserId)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(PeopleMessageCard);
+export default connect(mapStateToProps, mapDispatchToProps)(PeopleMessageCard);

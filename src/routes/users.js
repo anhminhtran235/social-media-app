@@ -10,7 +10,7 @@ const auth = require('../../middleware/auth');
 router.get('/', async (req, res) => {
   try {
     const users = await User.find().select(
-      '-passwordHash -sentFriendRequests -friends -posts -notifications -messages'
+      '-passwordHash -friends -posts -notifications -messages'
     );
 
     res.json(users);

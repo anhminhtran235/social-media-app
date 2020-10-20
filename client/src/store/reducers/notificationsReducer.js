@@ -1,7 +1,6 @@
 import {
   FETCH_NOTIFICATIONS,
   NEW_NOTIFICATION,
-  NOTIFICATION_LOADING,
   CLEAR_DATA,
 } from '../actionTypes';
 
@@ -31,6 +30,7 @@ const reducer = (state = initialState, action) => {
         notifications: updatedNotifications,
       };
     case CLEAR_DATA:
+      console.log('HERE');
       return {
         notifications: null,
       };

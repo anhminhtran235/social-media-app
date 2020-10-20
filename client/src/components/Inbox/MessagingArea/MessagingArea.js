@@ -30,8 +30,18 @@ class MessagingArea extends Component {
   sendMessage = () => {
     const receiverId = this.props.currentUserId;
     const content = this.state.message;
+    if (content === '') {
+      return;
+    }
     this.props.sendMessage(receiverId, content);
     this.setState({ message: '' });
+  };
+
+  handleKeypress = (e) => {
+    const isEnterKey = e.keyCode === 13;
+    if (isEnterKey) {
+      this.sendMessage();
+    }
   };
 
   render() {
@@ -67,6 +77,7 @@ class MessagingArea extends Component {
               value={this.state.message}
               onChange={this.onInputChange}
               name='message'
+              onKeyDown={this.handleKeypress}
             />
             <button
               className='msg_send_btn'

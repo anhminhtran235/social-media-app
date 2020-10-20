@@ -27,11 +27,12 @@ router.post('/', auth, async (req, res) => {
     });
     await message.save();
 
+    console.log(message);
     otherUser.messages.push(message.id);
     me.messages.push(message.id);
 
-    otherUser.save();
-    me.save();
+    await otherUser.save();
+    await me.save();
 
     const sendMessageSuccess = sendMessage(message);
     if (!sendMessageSuccess) {
@@ -72,13 +73,33 @@ router.get('/', auth, async (req, res) => {
         fromUserId: friends[i]._id,
         toUserId: me._id,
       });
+
       friends[i].messages = messagesFromMe.concat(messagesToMe);
     }
-
     res.json(friends);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error: Cannot get messages');
+  }
+});
+
+// @route   POST /messages/read
+// @desc    Mark conversation read
+// @access  Private
+router.post('/read', auth, async (req, res) => {
+  try {
+    const { otherUserId } = req.body;
+    const messages = await Message.find({
+      fromUserId: req.user._id,
+      toUserId: new mongoose.mongo.ObjectId(otherUserId),
+    });
+    messages.forEach(async (message) => {
+      message.read = true;
+      await message.save(); // No await
+    });
+    res.send('Mark read conversation successfully');
+  } catch (error) {
+    res.status(500).send('Server error: Cannot mark read');
   }
 });
 
