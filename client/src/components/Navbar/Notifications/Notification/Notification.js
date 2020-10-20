@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Component } from 'react';
 import { notiToMessage } from './notificationHandler';
 import './Notification.css';
 
 class Notification extends Component {
   render() {
-    const { _id, createdAt, data, read, type } = this.props.notification;
+    const { _id, /* createdAt, read, */ data, type } = this.props.notification;
     const content = data.from + ' ' + notiToMessage(type, data);
-    console.log(data);
+
     return (
       <div className='d-flex noti-card'>
         <img

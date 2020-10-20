@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { receiveMessage } from '../store/actions/messagesAction';
 import { receivedNewNotification } from '../store/actions/notificationsAction';
-import { NEW_MESSAGE } from '../store/actionTypes';
 
 class Websocket extends Component {
   state = {

@@ -1,9 +1,5 @@
 import axios from 'axios';
-import {
-  FETCH_NOTIFICATIONS,
-  NEW_NOTIFICATION,
-  NOTIFICATION_LOADING,
-} from '../actionTypes';
+import { FETCH_NOTIFICATIONS, NEW_NOTIFICATION } from '../actionTypes';
 import { buildUrl } from '../../utils/utils';
 import alertify from '../../utils/alertify';
 

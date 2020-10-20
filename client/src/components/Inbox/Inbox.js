@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import MessagingArea from './MessagingArea/MessagingArea';
 import PeopleMessageList from './PeopleMessageList/PeopleMessageList';
 import './inbox.css';

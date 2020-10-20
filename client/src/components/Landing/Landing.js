@@ -12,7 +12,7 @@ class Landing extends Component {
     }
     return (
       <div className='landing d-flex '>
-        <img className='landing-image' src={LandingImage} className='w-50' />
+        <img className='landing-image w-50' src={LandingImage} alt='landing ' />
         <div className='w-50 d-flex flex-column justify-content-center align-items-center text-justify'>
           <h1 className='text-primary'>Connect with the world</h1>
           <h1 className='text-primary'>Right now!</h1>

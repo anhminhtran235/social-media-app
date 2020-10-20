@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Component } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import { connect } from 'react-redux';

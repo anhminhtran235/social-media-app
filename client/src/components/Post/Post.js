@@ -5,7 +5,7 @@ import {
   deletePost,
   likePost,
 } from '../../store/actions/postsAction';
-import Comments from './Comments/Comments';
+// import Comments from './Comments/Comments';
 
 class Post extends Component {
   state = {
@@ -34,11 +34,11 @@ class Post extends Component {
       content,
       comments,
       likes,
-      createdAt,
+      // createdAt,
       _id,
     } = this.props.post;
-    const iDidLike = this.props.liked;
-    const isMine = this.props.isMine;
+    // const iDidLike = this.props.liked;
+    // const isMine = this.props.isMine;
     return (
       <div className='mb-4'>
         <div className='card gedf-card'>

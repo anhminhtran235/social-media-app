@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Component } from 'react';
 import Login from './Login/Login';
 import { connect } from 'react-redux';

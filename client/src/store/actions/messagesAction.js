@@ -56,7 +56,7 @@ const markReadUnread = (usersWithMessages, myUserId) => {
 export const markReadConversation = (otherUserId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('/messages/read', { otherUserId });
+      await axios.post('/messages/read', { otherUserId });
       dispatch({ type: MARK_READ_CONVERSATION, payload: otherUserId });
     } catch (error) {
       console.log(error);
