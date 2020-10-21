@@ -22,7 +22,7 @@ app.use('/messages', require('./routes/messages'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  console.log('HERE');
+  console.log('Production environment!');
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
     console.log('Hit *');
