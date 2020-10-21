@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { markReadConversation } from '../../../../store/actions/messagesAction';
 import { LOAD_CURRENT_MESSAGE_USER } from '../../../../store/actionTypes';
 import '../../inbox.css';
+import moment from 'moment';
 
 class PeopleMessageCard extends Component {
   render() {
@@ -42,7 +43,9 @@ class PeopleMessageCard extends Component {
             <h5>
               {userName}{' '}
               <span>
-                Dec 25{'  '}
+                {latestMessage
+                  ? moment(latestMessage.createdAt).format('MMMM D')
+                  : null}
                 <span className='text-primary'>
                   {read ? null : ' (unread)'}
                 </span>

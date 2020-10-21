@@ -5,13 +5,27 @@ import {
   deletePost,
   likePost,
 } from '../../store/actions/postsAction';
-// import Comments from './Comments/Comments';
+import Comments from './Comments/Comments';
+import { Button } from 'react-bootstrap';
+import moment from 'moment';
 
 class Post extends Component {
   state = {
     comment: '',
     isCommentOn: false,
+    reRender: null,
   };
+
+  componentDidMount() {
+    const reRenderEvery20Seconds = 20 * 1000;
+    this.interval = setInterval(() => {
+      this.setState({ reRender: Date.now() });
+    }, reRenderEvery20Seconds);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   onInputChange = (e) => {
     this.setState({
@@ -21,6 +35,13 @@ class Post extends Component {
 
   onToggleLike = (postId, postOwnerId) => {
     this.props.likePost(postId, postOwnerId);
+  };
+
+  onToggleComment = () => {
+    const commentOn = this.state.isCommentOn;
+    this.setState({
+      isCommentOn: !commentOn,
+    });
   };
 
   onCommentPost = (postId, postOwnerId) => {
@@ -34,11 +55,38 @@ class Post extends Component {
       content,
       comments,
       likes,
-      // createdAt,
+      createdAt,
       _id,
     } = this.props.post;
+
     // const iDidLike = this.props.liked;
-    // const isMine = this.props.isMine;
+    const isMine = this.props.isMine;
+
+    let commentSection = null;
+    if (this.state.isCommentOn) {
+      commentSection = (
+        <div className='mt-3'>
+          <div className='form-inline'>
+            <input
+              type='text'
+              className='form-control w-50 mr-1'
+              placeholder='Add a comment'
+              value={this.state.comment}
+              name='comment'
+              onChange={this.onInputChange}
+            />
+            <Button
+              className='btn-success'
+              onClick={() => this.onCommentPost(_id, author)}
+            >
+              Comment
+            </Button>
+          </div>
+
+          <Comments comments={comments} />
+        </div>
+      );
+    }
     return (
       <div className='mb-4'>
         <div className='card gedf-card'>
@@ -62,39 +110,38 @@ class Post extends Component {
           <div className='card-body'>
             <div className='text-muted h7 mb-2'>
               {' '}
-              <i className='fa fa-clock-o'></i> 10 min ago
+              <i className='fa fa-clock-o'></i> {moment(createdAt).fromNow()}
             </div>
             <p className='card-text'>{content}</p>
           </div>
           <div className='card-footer'>
-            <a
-              className='card-link clickable'
-              onClick={() => this.onToggleLike(_id, author)}
-            >
-              <i className='fa fa-gittip'></i> {'Like (' + likes.length + ')'}
-            </a>
-            <a className='card-link clickable'>
-              <i className='fa fa-comment'></i>{' '}
-              {'Comment (' + comments.length + ')'}
-            </a>
+            <div className='d-flex justify-content-between align-items-center'>
+              <div>
+                <a
+                  className='card-link clickable'
+                  onClick={() => this.onToggleLike(_id, author)}
+                >
+                  <i className='fa fa-gittip'></i>{' '}
+                  {'Like (' + likes.length + ')'}
+                </a>
+                <a
+                  className='card-link clickable'
+                  onClick={this.onToggleComment}
+                >
+                  <i className='fa fa-comment'></i>{' '}
+                  {'Comment (' + comments.length + ')'}
+                </a>
+              </div>
+              {isMine && (
+                <Button onClick={() => this.props.deletePost(_id)}>
+                  Delete Post
+                </Button>
+              )}
+            </div>
+
+            {commentSection}
           </div>
         </div>
-        {/* 
-        <input
-          type='text'
-          placeholder='Add a comment'
-          value={this.state.comment}
-          name='comment'
-          onChange={this.onInputChange}
-        />
-        <button onClick={() => this.onCommentPost(_id, author)}>Comment</button>
-        {isMine && (
-          <button onClick={() => this.props.deletePost(_id)}>
-            Delete Post
-          </button>
-        )}
-        <Comments comments={comments} />
-        <p>______________________________________________________</p> */}
       </div>
     );
   }

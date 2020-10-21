@@ -30,7 +30,9 @@ class Notifications extends Component {
           id='dropdown-basic'
         >
           <i className='fas fa-bell'></i>{' '}
-          {notifications ? '(' + notifications.length + ')' : null}
+          {notifications && notifications.length > 0
+            ? '(' + notifications.length + ')'
+            : null}
         </Dropdown.Toggle>
         <Dropdown.Menu className='noti-scrollable'>
           {notifications}

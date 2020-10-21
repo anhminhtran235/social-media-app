@@ -2,8 +2,24 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../../inbox.css';
+import moment from 'moment';
 
 class MessageBubble extends Component {
+  state = {
+    reRender: null,
+  };
+
+  componentDidMount() {
+    const reRenderEvery20Seconds = 20 * 1000;
+    this.interval = setInterval(() => {
+      this.setState({ reRender: Date.now() });
+    }, reRenderEvery20Seconds);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     const message = this.props.message;
     const me = this.props.myUser;
@@ -18,7 +34,10 @@ class MessageBubble extends Component {
         <div className='outgoing_msg'>
           <div className='sent_msg'>
             <p>{message.content}</p>
-            <span className='time_date'> 11:01 AM | June 9</span>
+            <span className='time_date'>
+              {' '}
+              {moment(message.createdAt).fromNow()}
+            </span>
           </div>
         </div>
       );
@@ -35,7 +54,10 @@ class MessageBubble extends Component {
           <div className='received_msg'>
             <div className='received_withd_msg'>
               <p>{message.content}</p>
-              <span className='time_date'> 11:01 AM | June 9</span>
+              <span className='time_date'>
+                {' '}
+                {moment(message.createdAt).fromNow()}
+              </span>
             </div>
           </div>
         </div>

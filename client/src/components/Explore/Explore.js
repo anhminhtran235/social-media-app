@@ -30,7 +30,7 @@ class Explore extends Component {
     return (
       <Fragment>
         <h1 className='mb-4 text-primary'>
-          Let's take a look at others' profiles
+          Let's take a look at other people's profiles
         </h1>
         <div className='d-flex flex-wrap'>{users}</div>
       </Fragment>
