@@ -22,13 +22,10 @@ app.use('/messages', require('./routes/messages'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  console.log('HERE!!!!!');
+  console.log('HERE');
   app.use(express.static('client/build'));
-
-  server.get('*', (req, res) => {
+  app.get('*', (req, res) => {
     console.log('Hit *');
-    console.log(req);
     console.log(path.resolve(__dirname, 'client', 'build', 'index.html'));
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
