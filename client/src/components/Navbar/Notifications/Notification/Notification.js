@@ -32,9 +32,9 @@ class Notification extends Component {
           alt=''
         />
         <div>
-          <h6 className='card-title d-flex justify-content-between'>
+          <h6 className='card-title d-flex justify-content-between mb-0'>
             <p>{_id}</p>
-            <div className='text-muted h7 mb-2'>
+            <div className='text-muted h7'>
               {' '}
               <i className='fa fa-clock-o'></i> {moment(createdAt).fromNow()}
             </div>
