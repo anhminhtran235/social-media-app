@@ -68,7 +68,7 @@ class MyProfile extends Component {
     const profile = (
       <form onSubmit={this.updateProfile} className='mb-4'>
         <div className='form-group row'>
-          <label for='userName' className='col-sm-2 col-form-label'>
+          <label htmlFor='userName' className='col-sm-2 col-form-label'>
             User Name
           </label>
           <div className='col-sm-10'>
@@ -86,7 +86,7 @@ class MyProfile extends Component {
           </div>
         </div>
         <div className='form-group row'>
-          <label for='fullName' className='col-sm-2 col-form-label'>
+          <label htmlFor='fullName' className='col-sm-2 col-form-label'>
             Full Name
           </label>
           <div className='col-sm-10'>
@@ -103,7 +103,7 @@ class MyProfile extends Component {
           </div>
         </div>
         <div className='form-group row'>
-          <label for='age' className='col-sm-2 col-form-label'>
+          <label htmlFor='age' className='col-sm-2 col-form-label'>
             Age
           </label>
           <div className='col-sm-10'>
@@ -119,7 +119,7 @@ class MyProfile extends Component {
           </div>
         </div>
         <div className='form-group row'>
-          <label for='bio' className='col-sm-2 col-form-label'>
+          <label htmlFor='bio' className='col-sm-2 col-form-label'>
             Bio
           </label>
           <div className='col-sm-10'>

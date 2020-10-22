@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
 router.get('/user/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select(
-      '-passwordHash -sentFriendRequests -notifications -messages'
+      '-passwordHash -notifications -messages'
     );
     if (!user) {
       return res.status(404).send('Error: User not found');

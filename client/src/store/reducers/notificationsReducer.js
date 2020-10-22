@@ -2,6 +2,7 @@ import {
   FETCH_NOTIFICATIONS,
   NEW_NOTIFICATION,
   CLEAR_DATA,
+  MARK_READ_NOTIFICATION,
 } from '../actionTypes';
 
 const initialState = {
@@ -28,6 +29,20 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         notifications: updatedNotifications,
+      };
+    case MARK_READ_NOTIFICATION:
+      const updatedNoti = [];
+      const notiId = action.payload;
+      state.notifications.forEach((noti) => {
+        const newNoti = { ...noti };
+        if (noti._id === notiId) {
+          newNoti.read = true;
+        }
+        updatedNoti.push(newNoti);
+      });
+      return {
+        ...state,
+        notifications: updatedNoti,
       };
     case CLEAR_DATA:
       console.log('HERE');

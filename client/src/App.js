@@ -18,6 +18,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 
 import './index.css';
 import { getFriendsWithMessages } from './store/actions/messagesAction';
+import PostFromNoti from './components/PostFromNoti/PostFromNoti';
 
 class App extends Component {
   componentDidUpdate() {
@@ -49,6 +50,7 @@ class App extends Component {
             <Switch>
               <Route path='/' exact component={Landing} />
               <Route path='/register' exact component={Register} />
+              <PrivateRoute path='/post/:id' exact component={PostFromNoti} />
               <PrivateRoute path='/home' exact component={Home} />
               <PrivateRoute path='/explore' exact component={Explore} />
               <PrivateRoute path='/messages' exact component={Inbox} />

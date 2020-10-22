@@ -8,6 +8,7 @@ import {
 import Comments from './Comments/Comments';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 class Post extends Component {
   state = {
@@ -17,6 +18,9 @@ class Post extends Component {
   };
 
   componentDidMount() {
+    if (this.props.enableComment) {
+      this.setState({ isCommentOn: true });
+    }
     const reRenderEvery20Seconds = 20 * 1000;
     this.interval = setInterval(() => {
       this.setState({ reRender: Date.now() });
@@ -49,9 +53,18 @@ class Post extends Component {
     this.setState({ comment: '' });
   };
 
+  goToUserPage = (id) => {
+    this.props.history.push('/users/' + id);
+  };
+
+  goToPostPage = (postId) => {
+    this.props.history.push('/post/' + postId);
+  };
+
   render() {
     const {
       author,
+      authorName,
       content,
       comments,
       likes,
@@ -59,8 +72,11 @@ class Post extends Component {
       _id,
     } = this.props.post;
 
-    // const iDidLike = this.props.liked;
-    const isMine = this.props.isMine;
+    const post = this.props.post;
+    const myUser = this.props.myUser;
+    const iDidLike =
+      post.likes.findIndex((likerId) => likerId === myUser._id) !== -1;
+    const isMine = myUser.posts.find((pId) => pId === post._id.toString());
 
     let commentSection = null;
     if (this.state.isCommentOn) {
@@ -102,15 +118,25 @@ class Post extends Component {
                   />
                 </div>
                 <div className='ml-2'>
-                  <div className='h7 text-muted'>{author}</div>
+                  <a
+                    className='h7 text-muted clickable'
+                    onClick={() => this.goToUserPage(author)}
+                  >
+                    {authorName}
+                  </a>
                 </div>
               </div>
             </div>
           </div>
           <div className='card-body'>
-            <div className='text-muted h7 mb-2'>
-              {' '}
-              <i className='fa fa-clock-o'></i> {moment(createdAt).fromNow()}
+            <div className='mb-3'>
+              <a
+                className='text-muted h7 clickable'
+                onClick={() => this.goToPostPage(post._id)}
+              >
+                {' '}
+                <i className='fa fa-clock-o'></i> {moment(createdAt).fromNow()}
+              </a>
             </div>
             <p className='card-text'>{content}</p>
           </div>
@@ -147,6 +173,12 @@ class Post extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    myUser: state.users.myUser,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     likePost: (postId, postOwnerId) => dispatch(likePost(postId, postOwnerId)),
@@ -156,4 +188,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Post));

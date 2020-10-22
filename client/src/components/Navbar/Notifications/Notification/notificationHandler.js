@@ -1,20 +1,26 @@
-const LIKE_POST = 'LIKE_POST';
-const LIKE_COMMENT = 'LIKE_COMMENT';
-const COMMENT = 'COMMENT';
-const SEND_MESSAGE = 'SEND_MESSAGE';
-const FRIEND_REQUEST = 'FRIEND_REQUEST';
-const FRIEND_REQUEST_ACCEPTED = 'FRIEND_REQUEST_ACCEPTED';
-const MESSAGE = 'MESSAGE';
+import {
+  LIKE_POST,
+  LIKE_COMMENT,
+  COMMENT_ON_MY_POST,
+  FRIEND_REQUEST,
+  FRIEND_REQUEST_ACCEPTED,
+  MESSAGE,
+  SEND_MESSAGE,
+} from './NotificationTypes';
 
 export const notiToMessage = (type, data) => {
   let message = '';
   if (type === LIKE_POST) {
     message = 'liked your post: ' + data.content.substring(0, 20);
-    message += '...';
+    if (data.content.length > 20) {
+      message += '...';
+    }
   } else if (type === LIKE_COMMENT) {
     message = 'liked your comment ' + data.content.substring(0, 20);
-    message += '...';
-  } else if (type === COMMENT) {
+    if (data.content.length > 20) {
+      message += '...';
+    }
+  } else if (type === COMMENT_ON_MY_POST) {
     message = 'commented on your post: ' + data.content.substring(0, 20);
     if (data.content.length > 20) {
       message += '...';

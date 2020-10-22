@@ -6,3 +6,7 @@
 .caret-off:after {
   display: none !important;
 }
+
+.unread-noti {
+  background: rgb(202, 201, 201) !important;
+}

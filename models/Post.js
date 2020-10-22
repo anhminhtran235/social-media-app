@@ -7,6 +7,10 @@ const PostSchema = new Schema({
     ref: 'user',
     required: true,
   },
+  authorName: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
@@ -18,16 +22,14 @@ const PostSchema = new Schema({
         ref: 'user',
         required: true,
       },
+      authorName: {
+        type: String,
+        required: true,
+      },
       content: {
         type: String,
         required: true,
       },
-      likes: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'user',
-        },
-      ],
       createdAt: {
         type: Date,
         default: Date.now,

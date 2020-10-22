@@ -90,8 +90,8 @@ router.post('/read', auth, async (req, res) => {
   try {
     const { otherUserId } = req.body;
     const messages = await Message.find({
-      fromUserId: req.user._id,
-      toUserId: new mongoose.mongo.ObjectId(otherUserId),
+      fromUserId: new mongoose.mongo.ObjectId(otherUserId),
+      toUserId: req.user._id,
     });
     messages.forEach(async (message) => {
       message.read = true;

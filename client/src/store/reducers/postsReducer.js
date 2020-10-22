@@ -100,7 +100,7 @@ const reducer = (state = initialState, action) => {
       const updatedPosts = [];
       state.newsfeedPosts.forEach((post) => {
         if (post._id === commentedPost._id) {
-          updatedPosts.push(commentedPost);
+          updatedPosts.push({ ...commentedPost });
         } else {
           updatedPosts.push({ ...post });
         }

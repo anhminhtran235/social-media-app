@@ -13,10 +13,14 @@ class Notifications extends Component {
 
   render() {
     let notifications = null;
+    let numUnreadNoti = 0;
     if (this.props.notifications) {
+      numUnreadNoti = this.props.notifications.filter((noti) => !noti.read)
+        .length;
       notifications = this.props.notifications.map((noti) => {
+        const className = noti.read ? '' : 'unread-noti';
         return (
-          <Dropdown.Item key={noti._id}>
+          <Dropdown.Item key={noti._id} className={className}>
             <Notification notification={noti} />
           </Dropdown.Item>
         );
@@ -30,9 +34,7 @@ class Notifications extends Component {
           id='dropdown-basic'
         >
           <i className='fas fa-bell'></i>{' '}
-          {notifications && notifications.length > 0
-            ? '(' + notifications.length + ')'
-            : null}
+          {numUnreadNoti > 0 ? '(' + numUnreadNoti + ')' : null}
         </Dropdown.Toggle>
         <Dropdown.Menu className='noti-scrollable'>
           {notifications}

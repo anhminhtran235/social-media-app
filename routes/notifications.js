@@ -24,24 +24,25 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route   POST /notifications
-// @desc    Add test notification
+// @route   POST /notifications/read
+// @desc    Mark read noti
 // @access  Private
-router.post('/', auth, async (req, res) => {
+router.post('/read', auth, async (req, res) => {
   try {
-    const { type, content } = req.body;
-    const noti = new Notification({
-      owner: req.user.id,
-      type,
-      content,
-    });
+    const { notiId } = req.body;
+    const noti = await Notification.findById(notiId);
+    if (!noti) {
+      return res.status(404).send('Error: Notification not found');
+    }
+    if (!req.user.notifications.includes(noti._id)) {
+      return res.status(401).send('Error: Unauthorize');
+    }
+    noti.read = true;
     await noti.save();
-    req.user.notifications.push(noti);
-    await req.user.save();
     res.json(noti);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server error: Test route');
+    res.status(500).send('Server error: Cannot mark notification read');
   }
 });
 

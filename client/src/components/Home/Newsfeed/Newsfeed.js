@@ -31,14 +31,7 @@ class Newsfeed extends Component {
         {myUser &&
           newsfeed &&
           newsfeed.map((post) => {
-            const liked =
-              post.likes.findIndex((likerId) => likerId === myUser._id) !== -1;
-            const isMine = myUser.posts.find(
-              (pId) => pId === post._id.toString()
-            );
-            return (
-              <Post key={post._id} post={post} liked={liked} isMine={isMine} />
-            );
+            return <Post key={post._id} post={post} />;
           })}
       </div>
     );

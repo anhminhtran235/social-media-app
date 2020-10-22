@@ -5,6 +5,12 @@ import { loadUserPosts } from '../../store/actions/postsAction';
 import { loadAUser } from '../../store/actions/usersAction';
 import Post from '../Post/Post';
 import { withRouter } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import {
+  addFriend,
+  cancelFriendRequest,
+  unfriend,
+} from '../../store/actions/usersAction';
 
 class UserProfile extends Component {
   componentDidMount() {
@@ -15,79 +21,114 @@ class UserProfile extends Component {
 
   render() {
     const user = this.props.user;
+    const myUser = this.props.myUser;
     if (!user) {
       return null;
     } else if (this.props.myUser._id === user._id) {
       this.props.history.push('/users/me');
     }
+    console.log(user);
+    const { _id, userName, fullName, bio, age } = user;
+    const isMyFriend = myUser.friends.includes(_id);
+    const hasSentFriendRequest = myUser.sentFriendRequests.includes(_id);
+    const hasSentMeFriendRequest = user.sentFriendRequests.includes(myUser._id);
+
+    let addFriendButton = null;
+    if (isMyFriend) {
+      addFriendButton = (
+        <Button
+          className='btn-primary'
+          onClick={() => this.props.unfriend(_id)}
+        >
+          Unfriend
+        </Button>
+      );
+    } else if (hasSentFriendRequest) {
+      addFriendButton = (
+        <Button
+          className='btn-primary'
+          onClick={() => this.props.cancelFriendRequest(_id)}
+        >
+          Unsend friend request
+        </Button>
+      );
+    } else if (hasSentMeFriendRequest) {
+      addFriendButton = (
+        <Button
+          className='btn-success'
+          onClick={() => this.props.addFriend(_id)}
+        >
+          Accept friend request
+        </Button>
+      );
+    } else {
+      addFriendButton = (
+        <Button
+          className='btn-success'
+          onClick={() => this.props.addFriend(_id)}
+        >
+          Add friend
+        </Button>
+      );
+    }
 
     const profile = (
       <form onSubmit={this.updateProfile} className='mb-4'>
         <div className='form-group row'>
-          <label for='userName' className='col-sm-2 col-form-label'>
+          <label htmlFor='userName' className='col-sm-2 col-form-label'>
             User Name
           </label>
           <div className='col-sm-10'>
             <input
               type='text'
               className='form-control'
-              value={user.userName}
+              value={userName}
               disabled
             />
           </div>
         </div>
         <div className='form-group row'>
-          <label for='fullName' className='col-sm-2 col-form-label'>
+          <label htmlFor='fullName' className='col-sm-2 col-form-label'>
             Full Name
           </label>
           <div className='col-sm-10'>
             <input
               type='text'
               className='form-control'
-              value={user.fullName}
+              value={fullName}
               disabled
             />
           </div>
         </div>
         <div className='form-group row'>
-          <label for='age' className='col-sm-2 col-form-label'>
+          <label htmlFor='age' className='col-sm-2 col-form-label'>
             Age
           </label>
           <div className='col-sm-10'>
             <input
               type='number'
               className='form-control'
-              value={user.age}
+              value={age}
               disabled
             />
           </div>
         </div>
         <div className='form-group row'>
-          <label for='bio' className='col-sm-2 col-form-label'>
+          <label htmlFor='bio' className='col-sm-2 col-form-label'>
             Bio
           </label>
           <div className='col-sm-10'>
             <textarea
               type='text'
               className='form-control'
-              value={user.bio}
+              value={bio}
               disabled
             />
           </div>
         </div>
+        {addFriendButton}
       </form>
     );
-
-    // if (user) {
-    //   profile = (
-    //     <div>
-    //       <p>User name: {user.userName}</p>
-    //       <p>Full name: {user.fullName}</p>
-    //       <p>Age: {user.age}</p>
-    //       <p>Bio: {user.bio}</p>
-    //     </div>
-    //   );
-    // }
 
     const posts = this.props.userPosts ? this.props.userPosts : [];
 
@@ -102,18 +143,21 @@ class UserProfile extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadUserPosts: (userId) => dispatch(loadUserPosts(userId)),
-    loadAUser: (userId) => dispatch(loadAUser(userId)),
-  };
-};
-
 const mapStateToProps = (state) => {
   return {
     myUser: state.users.myUser,
     user: state.users.currentlyViewingUser,
     userPosts: state.posts.currentPosts,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFriend: (id) => dispatch(addFriend(id)),
+    cancelFriendRequest: (id) => dispatch(cancelFriendRequest(id)),
+    unfriend: (id) => dispatch(unfriend(id)),
+    loadUserPosts: (userId) => dispatch(loadUserPosts(userId)),
+    loadAUser: (userId) => dispatch(loadAUser(userId)),
   };
 };
 

@@ -11,6 +11,8 @@ import {
   LOAD_POSTS_SUCCESS,
   POST_LOADING,
   DELETE_POST,
+  LOAD_A_POST_SUCCESS,
+  LOAD_A_POST_FAILURE,
 } from '../actionTypes';
 
 export const loadNewsfeed = (skip = null, limit = null) => {
@@ -37,6 +39,19 @@ export const loadUserPosts = (userId) => {
       dispatch({ type: LOAD_POSTS_SUCCESS, payload: res.data });
     } catch (error) {
       dispatch({ type: LOAD_POSTS_FAILURE });
+    }
+  };
+};
+
+export const loadAPost = (postId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get('/posts/post/' + postId);
+      console.log(res);
+      dispatch({ type: LOAD_A_POST_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({ type: LOAD_A_POST_FAILURE });
+      alertify.error(error.response.data);
     }
   };
 };

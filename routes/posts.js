@@ -5,8 +5,7 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const {
   LIKE_POST,
-  LIKE_COMMENT,
-  COMMENT,
+  COMMENT_ON_MY_POST: COMMENT,
 } = require('../utils/notificationType');
 const createNotiAndNotifyUser = require('../utils/notification');
 
@@ -36,6 +35,22 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @route   GET /posts/post/:postId
+// @desc    Get post by id
+// @access  Public
+router.get('/post/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(500).send('Post not found');
+    }
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json('Server error: Cannot find post');
+  }
+});
+
 // @route   POST /posts/me/new
 // @desc    Add new post
 // @access  Private
@@ -47,6 +62,7 @@ router.post('/me/new', auth, async (req, res) => {
     const newPost = new Post({
       content,
       author: user.id,
+      authorName: user.userName,
     });
     await newPost.save();
 
@@ -91,6 +107,7 @@ router.post('/comment', auth, async (req, res) => {
 
     post.comments.push({
       author: user.id,
+      authorName: user.userName,
       content,
     });
 
@@ -100,6 +117,8 @@ router.post('/comment', auth, async (req, res) => {
     const isOwner = user.id.toString() === postOwnerId;
     if (!isOwner) {
       await createNotiAndNotifyUser(postOwnerId, COMMENT, {
+        postId: post._id,
+        post,
         content,
         from: user.id.toString(),
       });
@@ -141,6 +160,7 @@ router.post('/like', auth, async (req, res) => {
     const isOwner = userId.toString() === postOwnerId;
     if (!isOwner && didLike) {
       await createNotiAndNotifyUser(postOwnerId, LIKE_POST, {
+        postId: post._id,
         content: post.content,
         from: userId.toString(),
       });
@@ -150,53 +170,6 @@ router.post('/like', auth, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json('Server Error: Cannot like/unlike post');
-  }
-});
-
-// @route   POST /posts/comment/like
-// @desc    Like comment
-// @access  Private
-router.post('/comment/like', auth, async (req, res) => {
-  try {
-    const { postId, commentId, commentOwnerId } = req.body;
-    const userId = req.user.id;
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.json('Post does not exist');
-    }
-    const commentIndex = post.comments.findIndex(
-      (comment) => commentId === comment.id.toString()
-    );
-    if (commentIndex === -1) {
-      return res.json('Comment does not exist');
-    }
-
-    let didLike = false;
-    const comment = post.comments[commentIndex];
-    const likes = comment.likes;
-    const index = likes.findIndex((id) => id.toString() === userId);
-    if (index !== -1) {
-      likes.splice(index, 1);
-    } else {
-      likes.push(userId);
-      didLike = true;
-    }
-
-    // Notify comment owner
-    const isOwner = userId.toString() === commentOwnerId;
-    if (!isOwner && didLike) {
-      await createNotiAndNotifyUser(commentOwnerId, LIKE_COMMENT, {
-        content: comment.content,
-        from: userId.toString(),
-      });
-    }
-
-    await post.save();
-
-    res.json({ msg: 'Toggle like successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json('Server Error: Cannot like/dislike comment');
   }
 });
 
