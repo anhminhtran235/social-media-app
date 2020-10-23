@@ -9,6 +9,13 @@ class PostFromNoti extends Component {
     this.props.loadCurrentPost(postId);
   }
 
+  componentDidUpdate(prevProps) {
+    const postId = this.props.match.params.id;
+    if (postId !== prevProps.match.params.id) {
+      this.props.loadCurrentPost(postId);
+    }
+  }
+
   render() {
     console.log(this.props);
     const post = this.props.currentPost;

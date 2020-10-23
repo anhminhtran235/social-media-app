@@ -19,15 +19,23 @@ class UserProfile extends Component {
     this.props.loadAUser(userId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      const userId = this.props.match.params.id;
+      this.props.loadUserPosts(userId);
+      this.props.loadAUser(userId);
+    }
+  }
+
   render() {
+    const userId = this.props.match.params.id;
     const user = this.props.user;
     const myUser = this.props.myUser;
-    if (!user) {
+    if (!user || !myUser) {
       return null;
-    } else if (this.props.myUser._id === user._id) {
+    } else if (this.props.myUser._id === userId) {
       this.props.history.push('/users/me');
     }
-    console.log(user);
     const { _id, userName, fullName, bio, age } = user;
     const isMyFriend = myUser.friends.includes(_id);
     const hasSentFriendRequest = myUser.sentFriendRequests.includes(_id);

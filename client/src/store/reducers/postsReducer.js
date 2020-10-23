@@ -59,6 +59,9 @@ const reducer = (state = initialState, action) => {
       };
     case ADDED_NEW_POST:
       const newNewsfeedPosts = [];
+      if (!state.newsfeedPosts) {
+        return state;
+      }
       state.newsfeedPosts.forEach((post) => {
         newNewsfeedPosts.push({ ...post });
       });
@@ -84,6 +87,9 @@ const reducer = (state = initialState, action) => {
     case LIKED_POST:
       const likedPost = action.payload;
       const newPosts = [];
+      if (!state.newsfeedPosts) {
+        return state;
+      }
       state.newsfeedPosts.forEach((post) => {
         if (post._id === likedPost._id) {
           newPosts.push(likedPost);
@@ -98,6 +104,9 @@ const reducer = (state = initialState, action) => {
     case COMMENTED_POST:
       const commentedPost = action.payload;
       const updatedPosts = [];
+      if (!state.newsfeedPosts) {
+        return state;
+      }
       state.newsfeedPosts.forEach((post) => {
         if (post._id === commentedPost._id) {
           updatedPosts.push({ ...commentedPost });

@@ -30,7 +30,6 @@ class Websocket extends Component {
 
   listenToSocketEvent = (socket) => {
     socket.on('message', (data) => {
-      console.log('HEREEE');
       this.props.receivedNewMessage(data);
     });
 

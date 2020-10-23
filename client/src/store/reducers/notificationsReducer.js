@@ -45,7 +45,6 @@ const reducer = (state = initialState, action) => {
         notifications: updatedNoti,
       };
     case CLEAR_DATA:
-      console.log('HERE');
       return {
         notifications: null,
       };
